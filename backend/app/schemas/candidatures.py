@@ -1,34 +1,26 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List, Dict
-from datetime import date
-from decimal import Decimal
+from typing import Optional
+from datetime import datetime
 
-class CandidatureCreate(BaseModel):
-    job_ref: str
-    lastname: str
-    firstname: str
+class CandidatureBase(BaseModel):
+    nom: str
+    prenom: str
     email: EmailStr
-    phone: Optional[str] = None
-    address: Optional[str] = None
-    city: Optional[str] = None
-    birthdate: Optional[date] = None
-    cv_file_id: int
-    lm_file_id: Optional[int] = None
-    diplomes_zip_id: Optional[int] = None
-    last_job: Optional[str] = None
-    last_company: Optional[str] = None
-    exp_years: Optional[int] = None
-    skills: Optional[List[str]] = None
-    langs_lvl: Optional[Dict[str, str]] = None
-    mobility_sites: Optional[List[str]] = None
-    avail_date: Optional[date] = None
-    sal_expectation: Optional[Decimal] = None
-    contract_accepted: Optional[str] = None
-    work_permit_status: Optional[str] = None
-    consent_bool: bool = False
+    poste: str
+    telephone: Optional[str] = None
+    date_candidature: Optional[datetime] = None
+    statut: Optional[str] = "En attente"
+    cv_path: Optional[str] = None
+    score: Optional[float] = None
 
-class CandidatureRead(CandidatureCreate):
+class CandidatureCreate(CandidatureBase):
+    pass
+
+class CandidatureUpdate(CandidatureBase):
+    pass
+
+class CandidatureResponse(CandidatureBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Remplace orm_mode = True

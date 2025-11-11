@@ -1,36 +1,50 @@
-# docker-compose.yml
 version: "3.9"
 
 services:
   db:
-    image: postgres:14
-    container_name: siirh-db
+    image: postgres:15
+    container_name: siirh_db
+    restart: always
     environment:
-      POSTGRES_USER: siirh_user
-      POSTGRES_PASSWORD: Jeremi123
-      POSTGRES_DB: siirh
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: siirh_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    volumes:
-      - siirh_db_data:/var/lib/postgresql/data
 
   backend:
-    build: ./backend
-    container_name: siirh-backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    ports:
-      - "8000:8000"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: siirh_backend_prod
     depends_on:
       - db
     environment:
-      DB_USER: siirh_user
-      DB_PASSWORD: Jeremi123
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: siirh
-    volumes:
-      - ./backend/uploads:/app/uploads
-      - ./backend:/app  # ho mora ny debug rehefa manova code
+      DATABASE_URL: postgresql://admin:admin@db:5432/siirh_db
+    ports:
+      - "8000:8000"
+
+  frontend_rh:
+    build:
+      context: ./frontend_rh
+      dockerfile: Dockerfile.prod
+    container_name: siirh_frontend_rh_prod
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+  frontend_candidat:
+    build:
+      context: ./frontend_candidat
+      dockerfile: Dockerfile.prod
+    container_name: siirh_frontend_candidat_prod
+    depends_on:
+      - backend
+    ports:
+      - "8081:80"
 
 volumes:
-  siirh_db_data:
+  db_data:

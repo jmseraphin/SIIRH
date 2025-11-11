@@ -1,0 +1,267 @@
+/* .liste-entretien-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #f5f1f1;
+  color: #f1f1f1;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  font-family: "Poppins", sans-serif;
+}
+
+.liste-entretien-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #51d845;
+  font-weight: 600;
+}
+
+.entretien-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1b1b1b;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.entretien-table th,
+.entretien-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.entretien-table th {
+  background: #222;
+  color: #ffdb70;
+  font-weight: 600;
+}
+
+.entretien-table tr:hover {
+  background: #1f1f1f;
+  transition: 0.2s;
+}
+
+.score-cell {
+  position: relative;
+  width: 140px;
+}
+
+.score-value {
+  font-weight: bold;
+  color: #ffb400;
+}
+
+.score-bar {
+  width: 100%;
+  height: 6px;
+  background: #333;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffb400, #ffdb70);
+  transition: width 0.5s ease;
+}
+
+.decision {
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+.decision.go {
+  color: #00d47e;
+}
+
+.decision.hold {
+  color: #ffc107;
+}
+
+.decision.nogo {
+  color: #ff5252;
+} */
+
+
+.dashboard-container {
+  padding: 10px 20px 20px 20px; /* ambony kely mba hifanaraka amin'ny sidebar */
+  font-family: 'Arial', sans-serif;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.dashboard-title {
+  background-color: #28a745;
+  color: white;
+  display: inline-block;
+  padding: 18px 35px;
+  border-radius: 10px;
+  font-size: 32px; /* nampitomboina kely ny haben’ny titre */
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* === BARRE DE RECHERCHE === */
+.dashboard-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  position: relative;
+}
+
+.dashboard-search input {
+  width: 60%;
+  padding: 12px 15px 12px 45px; /* place pour l’icône à gauche */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  text-align: center;
+}
+
+.dashboard-search-icon {
+  position: absolute;
+  left: calc(20% + 12px); /* positionne l’icône à gauche du champ */
+  color: #555;
+  pointer-events: none;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 18px;
+}
+
+/* === BOUTONS DU DASHBOARD === */
+.dashboard-buttons {
+  margin-top: 30px;
+}
+
+.dashboard-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f5f9;
+  padding: 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.dashboard-btn:hover {
+  transform: translateY(-5px);
+  background-color: #e2e8f0;
+}
+
+.icon-wrapper {
+  margin-bottom: 10px;
+}
+
+.dashboard-label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.dashboard-stat {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1E90FF;
+}
+
+/* === TABLEAU DES CANDIDATURES === */
+.liste-entretien-container {
+  overflow-x: auto;
+}
+
+.entretien-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.entretien-table th,
+.entretien-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.entretien-table th {
+  background-color: #53e074;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+.entretien-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* === COULEURS STATUT === */
+.decision.go {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.decision.nogo {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.decision.hold {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+/* === BOUTONS D’ACTION === */
+.selection-btn {
+  background-color: #168be5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.selection-btn:hover {
+  background-color: #218838;
+}
+
+.refuse-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.refuse-btn:hover {
+  background-color: #c82333;
+}
+
+/* Convocation: bouton bleu */
+.envoyer-btn {
+  background-color: #1E90FF;
+  color: rgb(180, 47, 47);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.envoyer-btn:hover {
+  background-color: #0066cc;
+}

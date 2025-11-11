@@ -1,136 +1,871 @@
+# import os
+# import shutil
+# from pathlib import Path
+# from typing import Optional
+# from datetime import datetime
+# from app.routers import candidature_rh, convocation
+# from app.models.models import Offre, Candidature
+
+# from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+# from fastapi.middleware.cors import CORSMiddleware
+# import sqlalchemy
+
+# from app.db import Base, engine
+# from app.routers import employees, contrats, paie, auth, reports, candidature_rh
+# from app.routers import convocation
+
+
+
+
+# # ==========================================================
+# # 🚀 CONFIGURATION GÉNÉRALE
+# # ==========================================================
+# app = FastAPI(title="SIIRH Backend - FastAPI", version="1.0")
+
+# # ✅ CORS Middleware – mba hahafahan'ny frontend (React) mifandray amin'ny backend
+# origins = [
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173",
+#     "http://localhost:5174",
+#     "http://127.0.0.1:5174",
+# ]
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+# # Database init
+# Base.metadata.create_all(bind=engine)
+
+# # Dossier de stockage
+# UPLOAD_DIR = Path("uploads")
+# UPLOAD_DIR.mkdir(exist_ok=True)
+
+# @app.get("/")
+# async def root():
+#     return {"message": "Bienvenue sur l’API SIIRH 🎉"}
+
+# # ==========================================================
+# # 📁 INCLUSION ROUTERS (backend principal)
+# # ==========================================================
+# app.include_router(employees.router, prefix="/api/employes", tags=["Employés"])
+# app.include_router(contrats.router, prefix="/api/contrats", tags=["Contrats"])
+# app.include_router(paie.router, prefix="/api/paie", tags=["Paie"])
+# app.include_router(auth.router, prefix="/auth", tags=["Authentification"])
+# app.include_router(reports.router, prefix="/api/rapports", tags=["Rapports RH"])
+# app.include_router(convocation.router)
+
+# # Candidatures RH (déjà fait)
+# app.include_router(candidature_rh.router, prefix="/rh", tags=["Candidatures RH"])
+
+# # ✅ Route pour l'envoi de convocation (depuis convocation.py)
+# # Attention: le router convocation a déjà prefix="/rh/candidatures" donc pas besoin de préfixe ici
+# app.include_router(convocation.router)
+
+
+# # ==========================================================
+# # 🧾 ENDPOINT PUBLIC POUR LE FORMULAIRE DE CANDIDATURE
+# # ==========================================================
+# @app.post("/api/candidatures")
+# async def create_candidature(
+#     nom: str = Form(...),
+#     prenom: str = Form(...),
+#     email: str = Form(...),
+#     phone: Optional[str] = Form(None),
+#     adresse: Optional[str] = Form(None),
+#     date_naissance: Optional[str] = Form(None),
+#     poste: str = Form(...),
+#     disponibilite: Optional[str] = Form(None),
+#     salaire: Optional[str] = Form(None),
+#     type_contrat: Optional[str] = Form(None),
+#     mobilite: Optional[str] = Form(None),
+#     autorisation: Optional[str] = Form(None),
+#     cv: UploadFile = File(...),
+#     lettre: Optional[UploadFile] = File(None),
+#     diplomes: Optional[UploadFile] = File(None),
+# ):
+#     """
+#     Endpoint pour enregistrer une candidature avec upload de fichiers.
+#     """
+#     try:
+#         # Sauvegarde fichiers
+#         def save_file(file: Optional[UploadFile]):
+#             if file:
+#                 path = UPLOAD_DIR / file.filename
+#                 with path.open("wb") as f:
+#                     shutil.copyfileobj(file.file, f)
+#                 return str(path)
+#             return None
+
+#         cv_path = save_file(cv)
+#         lettre_path = save_file(lettre)
+#         diplomes_path = save_file(diplomes)
+
+#         # Insertion en base
+#         query = sqlalchemy.text("""
+#             INSERT INTO candidatures (
+#                 nom, prenom, email, phone, adresse, date_naissance, poste,
+#                 disponibilite, salaire, type_contrat, mobilite, autorisation,
+#                 cv_path, lettre_path, diplomes_path, date_candidature, statut, score
+#             ) VALUES (
+#                 :nom, :prenom, :email, :phone, :adresse, :date_naissance, :poste,
+#                 :disponibilite, :salaire, :type_contrat, :mobilite, :autorisation,
+#                 :cv_path, :lettre_path, :diplomes_path, :date_candidature, :statut, :score
+#             )
+#         """)
+
+#         with engine.begin() as conn:
+#             conn.execute(query, {
+#                 "nom": nom,
+#                 "prenom": prenom,
+#                 "email": email,
+#                 "phone": phone,
+#                 "adresse": adresse,
+#                 "date_naissance": date_naissance,
+#                 "poste": poste,
+#                 "disponibilite": disponibilite,
+#                 "salaire": salaire,
+#                 "type_contrat": type_contrat,
+#                 "mobilite": mobilite,
+#                 "autorisation": autorisation,
+#                 "cv_path": cv_path,
+#                 "lettre_path": lettre_path,
+#                 "diplomes_path": diplomes_path,
+#                 "date_candidature": datetime.utcnow(),
+#                 "statut": "En attente",
+#                 "score": 0.0,
+#             })
+
+#         return {"message": "✅ Candidature envoyée avec succès !"}
+
+#     except Exception as e:
+#         import traceback
+#         print(traceback.format_exc())
+#         raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+
+
+# import os
+# import shutil
+# from pathlib import Path
+# from typing import Optional
+# from datetime import datetime
+# from app.routers import candidature_rh, convocation
+# from app.models.models import Offre, Candidature
+
+# from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+# from fastapi.middleware.cors import CORSMiddleware
+# import sqlalchemy
+
+# from app.db import Base, engine
+# from app.routers import employees, contrats, paie, auth, reports, candidature_rh
+# from app.routers import convocation
+
+# # ==========================================================
+# # 🚀 CONFIGURATION GÉNÉRALE
+# # ==========================================================
+# app = FastAPI(title="SIIRH Backend - FastAPI", version="1.0")
+
+# origins = [
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173",
+#     "http://localhost:5174",
+#     "http://127.0.0.1:5174",
+# ]
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+# # Database init
+# Base.metadata.create_all(bind=engine)
+
+# UPLOAD_DIR = Path("uploads")
+# UPLOAD_DIR.mkdir(exist_ok=True)
+
+# @app.get("/")
+# async def root():
+#     return {"message": "Bienvenue sur l’API SIIRH 🎉"}
+
+# # ==========================================================
+# # 📁 INCLUSION ROUTERS
+# # ==========================================================
+# app.include_router(employees.router, prefix="/api/employes", tags=["Employés"])
+# app.include_router(contrats.router, prefix="/api/contrats", tags=["Contrats"])
+# app.include_router(paie.router, prefix="/api/paie", tags=["Paie"])
+# app.include_router(auth.router, prefix="/auth", tags=["Authentification"])
+# app.include_router(reports.router, prefix="/api/rapports", tags=["Rapports RH"])
+# app.include_router(convocation.router)
+# app.include_router(candidature_rh.router, prefix="/rh", tags=["Candidatures RH"])
+
+# # ==========================================================
+# # 🧾 FORMULAIRE DE CANDIDATURE
+# # ==========================================================
+# @app.post("/api/candidatures")
+# async def create_candidature(
+#     nom: str = Form(...),
+#     prenom: str = Form(...),
+#     email: str = Form(...),
+#     phone: Optional[str] = Form(None),
+#     adresse: Optional[str] = Form(None),
+#     date_naissance: Optional[str] = Form(None),
+#     poste: str = Form(...),
+#     disponibilite: Optional[str] = Form(None),
+#     salaire: Optional[str] = Form(None),
+#     type_contrat: Optional[str] = Form(None),
+#     mobilite: Optional[str] = Form(None),
+#     autorisation: Optional[str] = Form(None),
+#     cv: UploadFile = File(...),
+#     lettre: Optional[UploadFile] = File(None),
+#     diplomes: Optional[UploadFile] = File(None),
+# ):
+#     """Enregistre une candidature avec upload de fichiers"""
+#     try:
+#         def save_file(file: Optional[UploadFile]):
+#             if file:
+#                 path = UPLOAD_DIR / file.filename
+#                 with path.open("wb") as f:
+#                     shutil.copyfileobj(file.file, f)
+#                 return str(path)
+#             return None
+
+#         cv_path = save_file(cv)
+#         lettre_path = save_file(lettre)
+#         diplomes_path = save_file(diplomes)
+
+#         query = sqlalchemy.text("""
+#             INSERT INTO candidatures (
+#                 nom, prenom, email, phone, adresse, date_naissance, poste,
+#                 disponibilite, salaire, type_contrat, mobilite, autorisation,
+#                 cv_path, lettre_path, diplomes_path, date_candidature, statut, score
+#             ) VALUES (
+#                 :nom, :prenom, :email, :phone, :adresse, :date_naissance, :poste,
+#                 :disponibilite, :salaire, :type_contrat, :mobilite, :autorisation,
+#                 :cv_path, :lettre_path, :diplomes_path, :date_candidature, :statut, :score
+#             )
+#         """)
+
+#         with engine.begin() as conn:
+#             conn.execute(query, {
+#                 "nom": nom,
+#                 "prenom": prenom,
+#                 "email": email,
+#                 "phone": phone,
+#                 "adresse": adresse,
+#                 "date_naissance": date_naissance,
+#                 "poste": poste,
+#                 "disponibilite": disponibilite,
+#                 "salaire": salaire,
+#                 "type_contrat": type_contrat,
+#                 "mobilite": mobilite,
+#                 "autorisation": autorisation,
+#                 "cv_path": cv_path,
+#                 "lettre_path": lettre_path,
+#                 "diplomes_path": diplomes_path,
+#                 "date_candidature": datetime.utcnow(),
+#                 "statut": "En attente",
+#                 "score": 0.0,
+#             })
+
+#         return {"message": "✅ Candidature envoyée avec succès !"}
+
+#     except Exception as e:
+#         import traceback
+#         print(traceback.format_exc())
+#         raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+
+# # ==========================================================
+# # 🧩 MODULE ENTRETIEN RH — Fanampiny vaovao
+# # ==========================================================
+# from pydantic import BaseModel
+# from typing import List
+
+# class Entretien(BaseModel):
+#     job_ref: str
+#     cand_id: str
+#     round_type: str
+#     date: str
+#     time: str
+#     evaluators: str
+#     tech_score: int
+#     soft_score: int
+#     cult_score: int
+#     lang_score: int
+#     disp_score: int
+#     sal_score: int
+#     notes: str
+#     risks: str
+#     decision: str
+#     proposal_type: str
+#     proposal_salary: str
+
+# @app.post("/api/entretiens")
+# async def enregistrer_entretien(data: Entretien):
+#     """Enregistrer une fiche d’entretien RH"""
+#     try:
+#         query = sqlalchemy.text("""
+#             INSERT INTO entretiens (
+#                 job_ref, cand_id, round_type, date, time, evaluators,
+#                 tech_score, soft_score, cult_score, lang_score,
+#                 disp_score, sal_score, notes, risks,
+#                 decision, proposal_type, proposal_salary, created_at
+#             ) VALUES (
+#                 :job_ref, :cand_id, :round_type, :date, :time, :evaluators,
+#                 :tech_score, :soft_score, :cult_score, :lang_score,
+#                 :disp_score, :sal_score, :notes, :risks,
+#                 :decision, :proposal_type, :proposal_salary, :created_at
+#             )
+#         """)
+
+#         with engine.begin() as conn:
+#             conn.execute(query, {
+#                 **data.dict(),
+#                 "created_at": datetime.utcnow()
+#             })
+
+#         return {"message": "✅ Entretien enregistré avec succès !"}
+
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Erreur lors de l’enregistrement: {e}")
+
+
+# @app.get("/api/entretiens")
+# async def liste_entretiens():
+#     """Retourne la liste des entretiens enregistrés"""
+#     try:
+#         query = sqlalchemy.text("SELECT * FROM entretiens ORDER BY created_at DESC")
+#         with engine.begin() as conn:
+#             result = conn.execute(query).mappings().all()
+#         return result
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+
+
+# import os
+# import shutil
+# from pathlib import Path
+# from typing import Optional
+# from datetime import datetime
+# from app.routers import candidature_rh, convocation
+# from app.models.models import Offre, Candidature
+
+# from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+# from fastapi.middleware.cors import CORSMiddleware
+# import sqlalchemy
+
+# from app.db import Base, engine
+# from app.routers import employees, contrats, paie, auth, reports, candidature_rh
+# from app.routers import convocation
+
+
+# # ==========================================================
+# # 🚀 CONFIGURATION GÉNÉRALE
+# # ==========================================================
+# app = FastAPI(title="SIIRH Backend - FastAPI", version="1.0")
+
+# origins = [
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173",
+#     "http://localhost:5174",
+#     "http://127.0.0.1:5174",
+# ]
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+# # Database init
+# Base.metadata.create_all(bind=engine)
+
+# UPLOAD_DIR = Path("uploads")
+# UPLOAD_DIR.mkdir(exist_ok=True)
+
+
+# @app.get("/")
+# async def root():
+#     return {"message": "Bienvenue sur l’API SIIRH 🎉"}
+
+
+# # ==========================================================
+# # 📁 INCLUSION ROUTERS
+# # ==========================================================
+# app.include_router(employees.router, prefix="/api/employes", tags=["Employés"])
+# app.include_router(contrats.router, prefix="/api/contrats", tags=["Contrats"])
+# app.include_router(paie.router, prefix="/api/paie", tags=["Paie"])
+# app.include_router(auth.router, prefix="/auth", tags=["Authentification"])
+# app.include_router(reports.router, prefix="/api/rapports", tags=["Rapports RH"])
+# app.include_router(convocation.router)
+# app.include_router(candidature_rh.router, prefix="/rh", tags=["Candidatures RH"])
+
+
+# # ==========================================================
+# # 🧾 FORMULAIRE DE CANDIDATURE
+# # ==========================================================
+# @app.post("/api/candidatures")
+# async def create_candidature(
+#     nom: str = Form(...),
+#     prenom: str = Form(...),
+#     email: str = Form(...),
+#     phone: Optional[str] = Form(None),
+#     adresse: Optional[str] = Form(None),
+#     date_naissance: Optional[str] = Form(None),
+#     poste: str = Form(...),
+#     disponibilite: Optional[str] = Form(None),
+#     salaire: Optional[str] = Form(None),
+#     type_contrat: Optional[str] = Form(None),
+#     mobilite: Optional[str] = Form(None),
+#     autorisation: Optional[str] = Form(None),
+#     cv: UploadFile = File(...),
+#     lettre: Optional[UploadFile] = File(None),
+#     diplomes: Optional[UploadFile] = File(None),
+# ):
+#     """Enregistre une candidature avec upload de fichiers"""
+#     try:
+#         def save_file(file: Optional[UploadFile]):
+#             if file:
+#                 path = UPLOAD_DIR / file.filename
+#                 with path.open("wb") as f:
+#                     shutil.copyfileobj(file.file, f)
+#                 return str(path)
+#             return None
+
+#         cv_path = save_file(cv)
+#         lettre_path = save_file(lettre)
+#         diplomes_path = save_file(diplomes)
+
+#         query = sqlalchemy.text("""
+#             INSERT INTO candidatures (
+#                 nom, prenom, email, phone, adresse, date_naissance, poste,
+#                 disponibilite, salaire, type_contrat, mobilite, autorisation,
+#                 cv_path, lettre_path, diplomes_path, date_candidature, statut, score
+#             ) VALUES (
+#                 :nom, :prenom, :email, :phone, :adresse, :date_naissance, :poste,
+#                 :disponibilite, :salaire, :type_contrat, :mobilite, :autorisation,
+#                 :cv_path, :lettre_path, :diplomes_path, :date_candidature, :statut, :score
+#             )
+#         """)
+
+#         with engine.begin() as conn:
+#             conn.execute(query, {
+#                 "nom": nom,
+#                 "prenom": prenom,
+#                 "email": email,
+#                 "phone": phone,
+#                 "adresse": adresse,
+#                 "date_naissance": date_naissance,
+#                 "poste": poste,
+#                 "disponibilite": disponibilite,
+#                 "salaire": salaire,
+#                 "type_contrat": type_contrat,
+#                 "mobilite": mobilite,
+#                 "autorisation": autorisation,
+#                 "cv_path": cv_path,
+#                 "lettre_path": lettre_path,
+#                 "diplomes_path": diplomes_path,
+#                 "date_candidature": datetime.utcnow(),
+#                 "statut": "En attente",
+#                 "score": 0.0,
+#             })
+
+#         return {"message": "✅ Candidature envoyée avec succès !"}
+
+#     except Exception as e:
+#         import traceback
+#         print(traceback.format_exc())
+#         raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+
+# # ==========================================================
+# # 🧩 MODULE ENTRETIEN RH — Fanampiny vaovao
+# # ==========================================================
+# from pydantic import BaseModel
+# from typing import List
+
+# class Entretien(BaseModel):
+#     job_ref: str
+#     cand_id: str
+#     round_type: str
+#     date: str
+#     time: str
+#     evaluators: str
+#     tech_score: int
+#     soft_score: int
+#     cult_score: int
+#     lang_score: int
+#     disp_score: int
+#     sal_score: int
+#     notes: str
+#     risks: str
+#     decision: str
+#     proposal_type: str
+#     proposal_salary: str
+
+
+# # -----------------------------
+# # 🔹 POST — Enregistrer un entretien
+# # -----------------------------
+# @app.post("/api/entretiens")
+# async def enregistrer_entretien(data: Entretien):
+#     """Enregistrer une fiche d’entretien RH"""
+#     try:
+#         query = sqlalchemy.text("""
+#             INSERT INTO entretiens (
+#                 job_ref, cand_id, round_type, date, time, evaluators,
+#                 tech_score, soft_score, cult_score, lang_score,
+#                 disp_score, sal_score, notes, risks,
+#                 decision, proposal_type, proposal_salary, created_at
+#             ) VALUES (
+#                 :job_ref, :cand_id, :round_type, :date, :time, :evaluators,
+#                 :tech_score, :soft_score, :cult_score, :lang_score,
+#                 :disp_score, :sal_score, :notes, :risks,
+#                 :decision, :proposal_type, :proposal_salary, :created_at
+#             )
+#         """)
+#         with engine.begin() as conn:
+#             conn.execute(query, {**data.dict(), "created_at": datetime.utcnow()})
+#         return {"message": "✅ Entretien enregistré avec succès !"}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Erreur lors de l’enregistrement: {e}")
+
+
+# # -----------------------------
+# # 🔹 GET — Lister les entretiens + infos candidats
+# # -----------------------------
+# @app.get("/api/entretiens")
+# async def liste_entretiens():
+#     """Retourne la liste des entretiens + infos candidat liées"""
+#     try:
+#         query = sqlalchemy.text("""
+#             SELECT e.id, e.cand_id, c.nom, c.prenom, c.poste, e.date,
+#                    ROUND(
+#                        (COALESCE(e.tech_score,0) + COALESCE(e.soft_score,0) +
+#                         COALESCE(e.cult_score,0) + COALESCE(e.lang_score,0) +
+#                         COALESCE(e.disp_score,0)) / 5.0, 1
+#                    ) AS score
+#             FROM entretiens e
+#             JOIN candidatures c ON e.cand_id = c.id
+#             ORDER BY e.created_at DESC
+#         """)
+#         with engine.begin() as conn:
+#             result = conn.execute(query).mappings().all()
+#         return result
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+
+
+
 import os
-import json
 import shutil
 from pathlib import Path
 from typing import Optional
+from datetime import datetime
+from app.routers import candidature_rh, convocation
+from app.models.models import Offre, Candidature
 
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import databases
 import sqlalchemy
 
-# --- Configuration DB ---
-DB_USER = os.getenv("DB_USER", "siirh_user")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "Jeremi123")
-DB_HOST = os.getenv("DB_HOST", "db")  # Docker service name
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "siirh")
+from app.db import Base, engine
+from app.routers import employees, contrats, paie, auth, reports, candidature_rh
+from app.routers import convocation
+from app.routers import scoring
+from app.routers import offres
 
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-database = databases.Database(DATABASE_URL)
-metadata = sqlalchemy.MetaData()
+from app.services.upload_service import save_upload_file  # nouveau import
 
-# --- Table candidature ---
-candidatures = sqlalchemy.Table(
-    "candidatures",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("lastname", sqlalchemy.String),
-    sqlalchemy.Column("firstname", sqlalchemy.String),
-    sqlalchemy.Column("email", sqlalchemy.String),
-    sqlalchemy.Column("phone", sqlalchemy.String),
-    sqlalchemy.Column("job_ref", sqlalchemy.String),
-    sqlalchemy.Column("cv_filename", sqlalchemy.String),
-    sqlalchemy.Column("job_requirements", sqlalchemy.JSON),
-    sqlalchemy.Column("score", sqlalchemy.Float)
-)
+# ==========================================================
+# 🚀 CONFIGURATION GÉNÉRALE
+# ==========================================================
+app = FastAPI(title="SIIRH Backend - FastAPI", version="1.0")
 
-# --- Engine SQLAlchemy ---
-engine = sqlalchemy.create_engine(DATABASE_URL)
-metadata.create_all(engine)
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+]
 
-# --- FastAPI App ---
-app = FastAPI()
-
-# ✅ CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- Uploads folder ---
+# Database init
+Base.metadata.create_all(bind=engine)
+
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-# --- Pydantic Model ---
-class CandidatureBase(BaseModel):
-    job_ref: str
-    lastname: str
-    firstname: str
-    email: str
-    phone: Optional[str] = None
-    job_requirements: dict
-
-# --- Root endpoint ---
 @app.get("/")
 async def root():
-    return {"message": "Bienvenue sur SIIRH API avec PostgreSQL 🎉"}
+    return {"message": "Bienvenue sur l’API SIIRH 🎉"}
 
-# --- Endpoint POST candidature pour le candidat ---
-@app.post("/api/recrutement/candidatures")
+# ==========================================================
+# 📁 INCLUSION ROUTERS
+# ==========================================================
+app.include_router(employees.router, prefix="/api/employes", tags=["Employés"])
+app.include_router(contrats.router, prefix="/api/contrats", tags=["Contrats"])
+app.include_router(paie.router, prefix="/api/paie", tags=["Paie"])
+app.include_router(auth.router, prefix="/auth", tags=["Authentification"])
+app.include_router(reports.router, prefix="/api/rapports", tags=["Rapports RH"])
+app.include_router(convocation.router)
+app.include_router(candidature_rh.router, prefix="/rh", tags=["Candidatures RH"])
+app.include_router(scoring.router)
+app.include_router(offres.router, prefix="/api/offres", tags=["Offres"])
+
+# ==========================================================
+# 🧾 FORMULAIRE DE CANDIDATURE
+# ==========================================================
+@app.post("/api/candidatures")
 async def create_candidature(
-    job_ref: str = Form(...),
-    lastname: str = Form(...),
-    firstname: str = Form(...),
+    nom: str = Form(...),
+    prenom: str = Form(...),
     email: str = Form(...),
     phone: Optional[str] = Form(None),
-    cv_file: UploadFile = File(...),
-    job_requirements: str = Form(...)
+    adresse: Optional[str] = Form(None),
+    date_naissance: Optional[str] = Form(None),
+    poste: str = Form(...),
+    disponibilite: Optional[str] = Form(None),
+    salaire: Optional[str] = Form(None),
+    type_contrat: Optional[str] = Form(None),
+    mobilite: Optional[str] = Form(None),
+    autorisation: Optional[str] = Form(None),
+    cv: UploadFile = File(...),
+    lettre: Optional[UploadFile] = File(None),
+    diplomes: Optional[UploadFile] = File(None),
 ):
-    # --- Mitahiry CV ---
-    file_location = UPLOAD_DIR / cv_file.filename
-    with file_location.open("wb") as f:
-        shutil.copyfileobj(cv_file.file, f)
-
-    # --- Parse JSON ---
+    """Enregistre une candidature avec upload de fichiers"""
     try:
-        job_req_dict = json.loads(job_requirements)
-    except json.JSONDecodeError:
-        job_req_dict = {}
+        def save_file(file: Optional[UploadFile]):
+            if file:
+                path = UPLOAD_DIR / file.filename
+                with path.open("wb") as f:
+                    shutil.copyfileobj(file.file, f)
+                return str(path)
+            return None
 
-    # --- Calcul scoring simplifié ---
-    skills_required = job_req_dict.get("skills", [])
-    candidate_skills = job_req_dict.get("candidate_skills", skills_required)
-    score_skills = (len(set(skills_required) & set(candidate_skills)) / max(len(skills_required), 1)) * 30
-    score_exp = min(job_req_dict.get("candidate_exp", 0) / max(job_req_dict.get("exp_years", 1), 1), 1) * 25
-    score_degree = 20 if job_req_dict.get("candidate_degree", "") == job_req_dict.get("degree", "") else 10
-    score_projects = job_req_dict.get("projects_score", 15)
-    score_total = score_skills + score_exp + score_degree + score_projects
+        cv_path = save_file(cv)
+        lettre_path = save_file(lettre)
+        diplomes_path = save_file(diplomes)
 
-    # --- Insert into DB ---
-    query = candidatures.insert().values(
-        lastname=lastname,
-        firstname=firstname,
-        email=email,
-        phone=phone,
-        job_ref=job_ref,
-        cv_filename=cv_file.filename,
-        job_requirements=job_req_dict,
-        score=score_total
-    )
-    await database.connect()
-    last_record_id = await database.execute(query)
-    await database.disconnect()
+        query = sqlalchemy.text("""
+            INSERT INTO candidatures (
+                nom, prenom, email, phone, adresse, date_naissance, poste,
+                disponibilite, salaire, type_contrat, mobilite, autorisation,
+                cv_path, lettre_path, diplomes_path, date_candidature, statut, score
+            ) VALUES (
+                :nom, :prenom, :email, :phone, :adresse, :date_naissance, :poste,
+                :disponibilite, :salaire, :type_contrat, :mobilite, :autorisation,
+                :cv_path, :lettre_path, :diplomes_path, :date_candidature, :statut, :score
+            )
+        """)
 
-    # ✅ Retour pour candidat **sans score**
-    return {
-        "candidature_id": last_record_id,
-        "message": "Votre candidature a été envoyée avec succès 🎉",
-        "parsed_json": {
-            "lastname": lastname,
-            "firstname": firstname,
-            "email": email,
-            "phone": phone,
-            "job_ref": job_ref,
-            "cv_filename": cv_file.filename,
-            "job_requirements": job_req_dict
-        }
-    }
+        with engine.begin() as conn:
+            conn.execute(query, {
+                "nom": nom,
+                "prenom": prenom,
+                "email": email,
+                "phone": phone,
+                "adresse": adresse,
+                "date_naissance": date_naissance,
+                "poste": poste,
+                "disponibilite": disponibilite,
+                "salaire": salaire,
+                "type_contrat": type_contrat,
+                "mobilite": mobilite,
+                "autorisation": autorisation,
+                "cv_path": cv_path,
+                "lettre_path": lettre_path,
+                "diplomes_path": diplomes_path,
+                "date_candidature": datetime.utcnow(),
+                "statut": "En attente",
+                "score": 0.0,
+            })
 
-# --- Importation du router RH (seul RH mahita score)
-from app.routers import candidature_rh
-app.include_router(candidature_rh.router, prefix="/api/recrutement", tags=["RH"])
+        return {"message": "✅ Candidature envoyée avec succès !"}
+
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+# ==========================================================
+# 🧩 MODULE ENTRETIEN RH
+# ==========================================================
+from pydantic import BaseModel
+
+class Entretien(BaseModel):
+    job_ref: str
+    cand_id: str
+    round_type: str
+    date: str
+    time: str
+    evaluators: str
+    tech_score: int
+    soft_score: int
+    cult_score: int
+    lang_score: int
+    disp_score: int
+    sal_score: int
+    notes: str
+    risks: str
+    decision: str
+    proposal_type: str
+    proposal_salary: str
+
+@app.post("/api/entretiens")
+async def enregistrer_entretien(data: Entretien):
+    """Enregistrer une fiche d’entretien RH"""
+    try:
+        query = sqlalchemy.text("""
+            INSERT INTO entretiens (
+                job_ref, cand_id, round_type, date, time, evaluators,
+                tech_score, soft_score, cult_score, lang_score,
+                disp_score, sal_score, notes, risks,
+                decision, proposal_type, proposal_salary, created_at
+            ) VALUES (
+                :job_ref, :cand_id, :round_type, :date, :time, :evaluators,
+                :tech_score, :soft_score, :cult_score, :lang_score,
+                :disp_score, :sal_score, :notes, :risks,
+                :decision, :proposal_type, :proposal_salary, :created_at
+            )
+        """)
+
+        with engine.begin() as conn:
+            conn.execute(query, {
+                **data.dict(),
+                "created_at": datetime.utcnow()
+            })
+
+        return {"message": "✅ Entretien enregistré avec succès !"}
+
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Erreur lors de l’enregistrement: {e}")
+
+@app.get("/api/entretiens")
+async def liste_entretiens():
+    """Retourne la liste des entretiens enregistrés"""
+    try:
+        query = sqlalchemy.text("""
+            SELECT e.*, c.nom, c.prenom, c.poste
+            FROM entretiens e
+            LEFT JOIN candidatures c ON c.id = e.cand_id::int
+            ORDER BY (
+                (tech_score + soft_score + cult_score + lang_score + disp_score + sal_score)/6
+            ) DESC
+        """)
+        with engine.begin() as conn:
+            result = conn.execute(query).mappings().all()
+        return result
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+# ==========================================================
+# 🚀 NOUVEAU: ROUTE POST POUR CRÉER UNE OFFRE ET UPLOAD SCORING AUTOMATIQUE
+# ==========================================================
+from pydantic import BaseModel
+from typing import List, Dict
+
+class OffreSchema(BaseModel):
+    title: str
+    job_ref: str
+    department: str
+    site: str
+    contract_type: str
+    creation_date: str
+    mission: str
+    activities_public: str
+    goals: str
+    education_level: str
+    exp_required_years: int
+    tech_skills: List[str]
+    soft_skills: List[str]
+    langs_lvl: Dict[str, str]
+    w_skills: float = 0.4
+    w_exp: float = 0.3
+    w_edu: float = 0.2
+    w_proj: float = 0.1
+    threshold: float = 60
+    deadline: Optional[str] = None
+    apply_link: Optional[str] = None
+
+@app.post("/api/offres")
+async def create_offre(data: OffreSchema):
+    """Créer une offre et préparer le scoring automatique"""
+    try:
+        query = sqlalchemy.text("""
+            INSERT INTO offres (
+                title, job_ref, department, site, contract_type,
+                creation_date, mission, activities_public, goals,
+                education_level, exp_required_years, tech_skills,
+                soft_skills, langs_lvl, w_skills, w_exp, w_edu, w_proj,
+                threshold, deadline, apply_link
+            ) VALUES (
+                :title, :job_ref, :department, :site, :contract_type,
+                :creation_date, :mission, :activities_public, :goals,
+                :education_level, :exp_required_years, :tech_skills,
+                :soft_skills, :langs_lvl, :w_skills, :w_exp, :w_edu, :w_proj,
+                :threshold, :deadline, :apply_link
+            )
+        """)
+
+        with engine.begin() as conn:
+            conn.execute(query, {
+                "title": data.title,
+                "job_ref": data.job_ref,
+                "department": data.department,
+                "site": data.site,
+                "contract_type": data.contract_type,
+                "creation_date": data.creation_date,
+                "mission": data.mission,
+                "activities_public": data.activities_public,
+                "goals": data.goals,
+                "education_level": data.education_level,
+                "exp_required_years": data.exp_required_years,
+                "tech_skills": str(data.tech_skills),
+                "soft_skills": str(data.soft_skills),
+                "langs_lvl": str(data.langs_lvl),
+                "w_skills": data.w_skills,
+                "w_exp": data.w_exp,
+                "w_edu": data.w_edu,
+                "w_proj": data.w_proj,
+                "threshold": data.threshold,
+                "deadline": data.deadline,
+                "apply_link": data.apply_link
+            })
+
+        return {"message": "✅ Offre créée avec succès !"}
+
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Erreur création offre : {e}")
+
+
+
+@app.get("/api/test")
+async def test_connection():
+    return {"message": "✅ Backend connecté avec succès !"}
