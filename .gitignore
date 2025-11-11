@@ -11,3 +11,8 @@ package-lock.json
 # IDE
 .vscode/
 .idea/
+venv/
+node_modules/
+__pycache__/
+.env
+*.pyc
