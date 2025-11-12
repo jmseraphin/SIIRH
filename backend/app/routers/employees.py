@@ -501,6 +501,101 @@
 
 
 
+# # backend/app/routers/employees.py
+# from fastapi import APIRouter, HTTPException, Depends
+# from sqlalchemy.orm import Session
+# from app.db import get_db
+# from app.models.models import Candidature, Employee
+
+# router = APIRouter()
+
+# # ==========================================================
+# # 📌 Créer un Employee depuis une Candidature
+# # ==========================================================
+# @router.post("/from-candidature/{candidature_id}")
+# def create_employee_from_candidature(candidature_id: int, db: Session = Depends(get_db)):
+#     # 1️⃣ Récupérer la candidature
+#     candidature = db.query(Candidature).filter(Candidature.id == candidature_id).first()
+#     if not candidature:
+#         raise HTTPException(status_code=404, detail="Candidature non trouvée")
+
+#     # 2️⃣ Vérifier si l'employee existe déjà pour cette candidature
+#     if candidature.employee:
+#         # Renvoi info sans créer un nouveau record
+#         return {
+#             "message": "ℹ️ Candidat déjà transformé en Employee",
+#             "employee_id": candidature.employee.id
+#         }
+
+#     # 3️⃣ Mapping des champs
+#     new_employee = Employee(
+#         fullname=candidature.fullname or "Nom Inconnu",
+#         email=candidature.email,
+#         phone=candidature.phone,
+#         poste=None,
+#         candidature_id=candidature.id
+#     )
+
+#     # 4️⃣ Ajouter et valider en DB
+#     db.add(new_employee)
+#     db.commit()
+#     db.refresh(new_employee)
+
+#     # 5️⃣ Mettre à jour le statut de la candidature
+#     candidature.statut = "Employé"
+#     db.commit()
+
+#     return {
+#         "message": "✅ Candidat ajouté comme Employee !",
+#         "employee_id": new_employee.id
+#     }
+
+# # ==========================================================
+# # 📌 Liste de tous les Employees
+# # ==========================================================
+# @router.get("/")
+# def list_employees(db: Session = Depends(get_db)):
+#     employees = db.query(Employee).group_by(Employee.id).all()
+
+#     result = []
+#     for e in employees:
+#         # Séparer nom et prénom si possible
+#         nom, prenom = None, None
+#         if e.fullname:
+#             parts = e.fullname.strip().split(" ", 1)
+#             nom = parts[0]
+#             prenom = parts[1] if len(parts) > 1 else ""
+
+#         # ✅ Vérifier téléphone : si vide, "Aucune"
+#         phone_value = e.phone.strip() if e.phone and e.phone.strip() != "" else "Aucune"
+
+#         result.append({
+#             "id": e.id,
+#             "nom": nom or "Inconnu",
+#             "prenom": prenom or "Inconnu",
+#             "poste": e.poste or "Non défini",
+#             "email": e.email,
+#             "phone": phone_value,
+#             "candidature_id": e.candidature_id
+#         })
+
+#     return result
+
+# # ==========================================================
+# # 📌 Détails d’un Employee
+# # ==========================================================
+# @router.get("/{employee_id}")
+# def get_employee(employee_id: int, db: Session = Depends(get_db)):
+#     employee = db.query(Employee).filter(Employee.id == employee_id).first()
+#     if not employee:
+#         raise HTTPException(status_code=404, detail="Employee non trouvé")
+#     return employee
+
+
+
+
+
+
 # backend/app/routers/employees.py
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -521,18 +616,17 @@ def create_employee_from_candidature(candidature_id: int, db: Session = Depends(
 
     # 2️⃣ Vérifier si l'employee existe déjà pour cette candidature
     if candidature.employee:
-        # Renvoi info sans créer un nouveau record
         return {
             "message": "ℹ️ Candidat déjà transformé en Employee",
             "employee_id": candidature.employee.id
         }
 
-    # 3️⃣ Mapping des champs
+    # 3️⃣ Mapping des champs avec poste et téléphone
     new_employee = Employee(
         fullname=candidature.fullname or "Nom Inconnu",
-        email=candidature.email,
-        phone=candidature.phone,
-        poste=None,
+        email=candidature.email or "",
+        phone=candidature.phone or "",        # Récupérer le numéro même s'il est vide
+        poste=candidature.poste or "",        # Récupérer le poste depuis la candidature
         candidature_id=candidature.id
     )
 
@@ -555,7 +649,7 @@ def create_employee_from_candidature(candidature_id: int, db: Session = Depends(
 # ==========================================================
 @router.get("/")
 def list_employees(db: Session = Depends(get_db)):
-    employees = db.query(Employee).group_by(Employee.id).all()
+    employees = db.query(Employee).all()
 
     result = []
     for e in employees:
@@ -566,16 +660,13 @@ def list_employees(db: Session = Depends(get_db)):
             nom = parts[0]
             prenom = parts[1] if len(parts) > 1 else ""
 
-        # ✅ Vérifier téléphone : si vide, "Aucune"
-        phone_value = e.phone.strip() if e.phone and e.phone.strip() != "" else "Aucune"
-
         result.append({
             "id": e.id,
             "nom": nom or "Inconnu",
             "prenom": prenom or "Inconnu",
-            "poste": e.poste or "Non défini",
-            "email": e.email,
-            "phone": phone_value,
+            "poste": e.poste if e.poste else "Non défini",  # Déjà récupéré depuis candidature
+            "email": e.email if e.email else "—",
+            "phone": e.phone if e.phone else "Aucune",
             "candidature_id": e.candidature_id
         })
 

@@ -1,141 +1,4 @@
-# from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON
-# from sqlalchemy.orm import relationship
-# from app.db import Base
-
-# class Offre(Base):
-#     __tablename__ = "offres"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     titre = Column(String(255))
-#     description = Column(Text)
-#     competences = Column(Text)
-#     date_cloture = Column(String(50))
-
-#     candidatures = relationship("Candidature", back_populates="offre")
-
-
-# class Candidature(Base):
-#     __tablename__ = "candidatures"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     fullname = Column(String(255))
-#     email = Column(String(255))
-#     phone = Column(String(50))
-#     source = Column(String(100))
-#     raw_cv_s3 = Column(Text)
-#     parsed_json = Column(JSON)
-#     score = Column(Float)
-#     statut = Column(String(50), default="nouveau")
-
-#     # Ity no zava-dehibe 😎
-#     offre_id = Column(Integer, ForeignKey("offres.id"))
-#     offre = relationship("Offre", back_populates="candidatures")
-
-
-
-# from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON
-# from sqlalchemy.orm import relationship
-# from app.db import Base
-
-
-# class Offre(Base):
-#     __tablename__ = "offres"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     titre = Column(String(255), nullable=False)
-#     description = Column(Text, nullable=True)
-#     competences = Column(Text, nullable=True)
-#     date_cloture = Column(String(50), nullable=True)
-
-#     # Relation vers les candidatures liées à cette offre
-#     candidatures = relationship(
-#         "Candidature",
-#         back_populates="offre",
-#         cascade="all, delete-orphan"
-#     )
-
-
-# class Candidature(Base):
-#     __tablename__ = "candidatures"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     fullname = Column(String(255), nullable=False)
-#     email = Column(String(255), nullable=False)
-#     phone = Column(String(50), nullable=True)
-#     source = Column(String(100), nullable=True)
-#     raw_cv_s3 = Column(Text, nullable=True)
-#     parsed_json = Column(JSON, nullable=True)
-#     score = Column(Float, nullable=True)
-#     statut = Column(String(50), default="nouveau")
-
-#     # Clé étrangère vers Offre
-#     offre_id = Column(Integer, ForeignKey("offres.id", ondelete="CASCADE"), nullable=False)
-
-#     # Relation inverse vers Offre
-#     offre = relationship("Offre", back_populates="candidatures")
-
-
-
-
-
-# from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON
-# from sqlalchemy.orm import relationship
-# from app.db import Base
-
-
-# class Offre(Base):
-#     __tablename__ = "offres"
-#     __table_args__ = {"extend_existing": True}
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     titre = Column(String(255), nullable=False)
-#     description = Column(Text, nullable=True)
-#     competences = Column(Text, nullable=True)
-#     date_cloture = Column(String(50), nullable=True)
-
-#     # Relation vers Candidature
-#     candidatures = relationship(
-#         "Candidature",
-#         back_populates="offre",
-#         cascade="all, delete-orphan"
-#     )
-
-
-# class Candidature(Base):
-#     __tablename__ = "candidatures"
-#     __table_args__ = {"extend_existing": True}
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     fullname = Column(String(255), nullable=False)
-#     email = Column(String(255), nullable=False)
-#     phone = Column(String(50), nullable=True)
-#     source = Column(String(100), nullable=True)
-#     raw_cv_s3 = Column(Text, nullable=True)
-#     parsed_json = Column(JSON, nullable=True)
-#     score = Column(Float, nullable=True)
-#     statut = Column(String(50), default="nouveau")
-
-#     offre_id = Column(Integer, ForeignKey("offres.id", ondelete="CASCADE"), nullable=False)
-
-#     # back ref
-#     offre = relationship("Offre", back_populates="candidatures")
-
-#     # Relation vers Convocation
-#     convocations = relationship(
-#         "Convocation",
-#         back_populates="candidature",
-#         cascade="all, delete-orphan"
-#     )
-
-
-
-
-
-
-
-
-
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON, Date
 from sqlalchemy.orm import relationship
 from app.db import Base
 
@@ -208,6 +71,9 @@ class Employee(Base):
     # Relation vers Paie
     paies = relationship("Paie", back_populates="employee")
 
+    # Relation vers Contrat
+    contrats = relationship("Contrat", back_populates="employee")
+
 
 class Paie(Base):
     __tablename__ = "paies"
@@ -226,11 +92,14 @@ class Contrat(Base):
     __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), nullable=False)
-    employee_id = Column(Integer, ForeignKey("employees.id"))
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    type_contrat = Column(String(50), nullable=False)
+    date_debut = Column(Date, nullable=False)
+    date_fin = Column(Date, nullable=True)
+    salaire = Column(Float, nullable=True)
 
     # back ref vers Employee
-    employee = relationship("Employee")
+    employee = relationship("Employee", back_populates="contrats")
 
 
 class Utilisateur(Base):
@@ -242,13 +111,17 @@ class Utilisateur(Base):
     password = Column(String(255), nullable=False)
 
 
+# ======= Convocation (Fanitsiana) =======
 class Convocation(Base):
     __tablename__ = "convocations"
     __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(String(50), nullable=True)
-    lieu = Column(String(255), nullable=True)
+    date_entretien = Column(String(50), nullable=True)   # ✅ date entretien
+    heure_entretien = Column(String(50), nullable=True)  # ✅ heure entretien
+    lieu_entretien = Column(String(255), nullable=True)  # ✅ lieu entretien
+    status = Column(String(50), nullable=True)           # ✅ status convocation
+    lien_fichier = Column(String(255), nullable=True)    # ✅ chemin PDF si tiana
     candidature_id = Column(Integer, ForeignKey("candidatures.id"))
 
     # back ref vers Candidature

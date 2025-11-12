@@ -2,32 +2,16 @@
 // import logo from "../assets/codel_logo1.png";
 // import { NavLink, useNavigate } from "react-router-dom";
 // import {
-//   LogOut,
-//   Users,
-//   FileSpreadsheet,
-//   DollarSign,
-//   FileText,
-//   BarChart3,
-//   Calendar,
-//   Gavel,
-//   BarChart,
-//   Settings,
-//   ClipboardCheck,
-//   Briefcase,
-//   Mail,
-//   Lock,
-//   Eye,
-//   EyeOff,
-//   ChevronUp,
-//   ChevronDown,
-//   User,
+//   LogOut, Users, FileSpreadsheet, DollarSign, FileText,
+//   BarChart3, Calendar, Gavel, BarChart, Settings,
+//   ClipboardCheck, Briefcase, Mail, Lock, Eye, EyeOff,
+//   ChevronUp, ChevronDown, User
 // } from "lucide-react";
 // import { useRef, useState, useEffect } from "react";
 
 // const translations = {
 //   fr: {
 //     dashboard: "Tableau de bord",
-//     employees: "Employés",
 //     contracts: "Contrats",
 //     payroll: "Paie",
 //     reports: "Rapports",
@@ -44,7 +28,6 @@
 //   },
 //   en: {
 //     dashboard: "Dashboard",
-//     employees: "Employees",
 //     contracts: "Contracts",
 //     payroll: "Payroll",
 //     reports: "Reports",
@@ -79,11 +62,9 @@
 //   );
 
 //   useEffect(() => {
-//     const checkLang = () => {
-//       const currentLang = localStorage.getItem("lang") || "fr";
-//       setLang(currentLang);
-//     };
-//     const interval = setInterval(checkLang, 500);
+//     const interval = setInterval(() => {
+//       setLang(localStorage.getItem("lang") || "fr");
+//     }, 500);
 //     return () => clearInterval(interval);
 //   }, []);
 
@@ -118,7 +99,6 @@
 
 //   const navItems = [
 //     { path: "/rh/Dashboard", key: "dashboard", icon: <BarChart3 size={18} /> },
-//     { path: "/rh/Employes", key: "employees", icon: <Users size={18} /> },
 //     { path: "/rh/Contrats", key: "contracts", icon: <FileSpreadsheet size={18} /> },
 //     { path: "/rh/Paie", key: "payroll", icon: <DollarSign size={18} /> },
 //     { path: "/rh/Rapports", key: "reports", icon: <FileText size={18} /> },
@@ -128,7 +108,6 @@
 //     { path: "/rh/Parametres", key: "settings", icon: <Settings size={18} /> },
 //     { path: "/rh/convocation", key: "convocation", icon: <FileText size={18} /> },
 //     { path: "/rh/entretien", key: "interview", icon: <ClipboardCheck size={18} /> },
-//     // ❌ Lien "Liste des entretiens" supprimé
 //     { path: "/rh/offre", key: "offers", icon: <Briefcase size={18} /> },
 //   ];
 
@@ -235,6 +214,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 import "./Sidebar.css";
 import logo from "../assets/codel_logo1.png";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -249,7 +238,6 @@ import { useRef, useState, useEffect } from "react";
 const translations = {
   fr: {
     dashboard: "Tableau de bord",
-    contracts: "Contrats",
     payroll: "Paie",
     reports: "Rapports",
     absences: "Absences",
@@ -265,7 +253,6 @@ const translations = {
   },
   en: {
     dashboard: "Dashboard",
-    contracts: "Contracts",
     payroll: "Payroll",
     reports: "Reports",
     absences: "Absences",
@@ -336,7 +323,6 @@ export default function Sidebar() {
 
   const navItems = [
     { path: "/rh/Dashboard", key: "dashboard", icon: <BarChart3 size={18} /> },
-    { path: "/rh/Contrats", key: "contracts", icon: <FileSpreadsheet size={18} /> },
     { path: "/rh/Paie", key: "payroll", icon: <DollarSign size={18} /> },
     { path: "/rh/Rapports", key: "reports", icon: <FileText size={18} /> },
     { path: "/rh/Absences", key: "absences", icon: <Calendar size={18} /> },

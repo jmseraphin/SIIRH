@@ -1,147 +1,60 @@
-# from pydantic import BaseModel, EmailStr
-# from typing import Optional
-# from datetime import datetime
-
-
-# # --- 🔹 Candidature ---
-# class CandidatureBase(BaseModel):
-#     nom: str
-#     prenom: str
-#     email: EmailStr
-#     telephone: Optional[str] = None
-#     adresse: Optional[str] = None
-#     date_naissance: Optional[str] = None
-#     poste: str
-#     disponibilite: Optional[str] = None
-#     salaire: Optional[str] = None
-#     type_contrat: Optional[str] = None
-#     mobilite: Optional[str] = None
-#     autorisation: Optional[str] = None
-#     cv_path: Optional[str] = None
-#     lettre_path: Optional[str] = None
-#     diplomes_path: Optional[str] = None
-#     statut: Optional[str] = "En attente"
-#     score: Optional[float] = None
-#     date_candidature: Optional[datetime] = None
-
-#     class Config:
-#         from_attributes = True
-
-
-# class CandidatureResponse(CandidatureBase):
-#     id: int
-
-#     class Config:
-#         from_attributes = True
-
-
-
-
-
-
-# from pydantic import BaseModel, EmailStr
-# from typing import Optional
-# from datetime import datetime
-
-# # --- 🔹 Candidature ---
-# class CandidatureBase(BaseModel):
-#     nom: str
-#     prenom: str
-#     email: EmailStr
-#     telephone: Optional[str] = None
-#     adresse: Optional[str] = None
-#     date_naissance: Optional[str] = None
-#     poste: str
-#     disponibilite: Optional[str] = None
-#     salaire: Optional[str] = None
-#     type_contrat: Optional[str] = None
-#     mobilite: Optional[str] = None
-#     autorisation: Optional[str] = None
-#     cv_path: Optional[str] = None
-#     lettre_path: Optional[str] = None
-#     diplomes_path: Optional[str] = None
-#     statut: Optional[str] = "En attente"
-#     score: Optional[float] = None
-#     date_candidature: Optional[datetime] = None
-
-#     class Config:
-#         from_attributes = True
-
-# class CandidatureResponse(CandidatureBase):
-#     id: int
-
-#     class Config:
-#         from_attributes = True
-
-# # --- 🔹 Employee ---
-# class EmployeeCreate(BaseModel):
-#     candidat_id: int  # ✅ fanampiana ho an'ny POST /employees/
-
-#     class Config:
-#         from_attributes = True
-
-
-
-
-
-
-
-from pydantic import BaseModel, EmailStr
+from datetime import date
 from typing import Optional
-from datetime import datetime
+from pydantic import BaseModel, validator
 
-# --- 🔹 Candidature ---
-class CandidatureBase(BaseModel):
-    nom: str
-    prenom: str
-    email: EmailStr
-    telephone: Optional[str] = None
-    adresse: Optional[str] = None
-    date_naissance: Optional[str] = None
-    poste: str
-    disponibilite: Optional[str] = None
-    salaire: Optional[str] = None
-    type_contrat: Optional[str] = None
-    mobilite: Optional[str] = None
-    autorisation: Optional[str] = None
-    cv_path: Optional[str] = None
-    lettre_path: Optional[str] = None
-    diplomes_path: Optional[str] = None
-    statut: Optional[str] = "En attente"
-    score: Optional[float] = None
-    date_candidature: Optional[datetime] = None
+# --------------------
+# Contrat schemas efa misy
+# --------------------
+class ContratBase(BaseModel):
+    employee_id: int
+    type_contrat: str
+    date_debut: date
+    date_fin: Optional[date] = None
+    salaire: Optional[float] = 0.0
+
+    @validator("date_fin", pre=True, always=True)
+    def empty_string_to_none(cls, v):
+        if v == "":
+            return None
+        return v
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
-class CandidatureResponse(CandidatureBase):
+class ContratCreate(ContratBase):
+    pass
+
+class ContratUpdate(BaseModel):
+    employee_id: Optional[int] = None
+    type_contrat: Optional[str] = None
+    date_debut: Optional[date] = None
+    date_fin: Optional[date] = None
+    salaire: Optional[float] = None
+
+    class Config:
+        orm_mode = True
+
+class ContratOut(ContratBase):
     id: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
+# --------------------
+# Convocation schemas (fanampiana)
+# --------------------
+class ConvocationBase(BaseModel):
+    date_entretien: Optional[str] = None
+    heure_entretien: Optional[str] = None
+    lieu_entretien: Optional[str] = None
+    status: Optional[str] = None
+    lien_fichier: Optional[str] = None
 
-# --- 🔹 Employee ---
-class EmployeeBase(BaseModel):
-    nom: str
-    prenom: str
-    fullname: str
-    email: EmailStr
-    phone: Optional[str] = None
-    poste: Optional[str] = None
+    class Config:
+        orm_mode = True
+
+class ConvocationCreate(ConvocationBase):
     candidature_id: int
 
-    class Config:
-        from_attributes = True
-
-class EmployeeCreate(BaseModel):
-    candidat_id: int  # ho an'ny POST /employees/
-
-    class Config:
-        from_attributes = True
-
-class EmployeeResponse(EmployeeBase):
+class ConvocationOut(ConvocationBase):
     id: int
-
-    class Config:
-        from_attributes = True
