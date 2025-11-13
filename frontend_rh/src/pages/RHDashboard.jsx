@@ -282,7 +282,7 @@ const RHDashboard = () => {
 
           {(view==="selectionnee" || view==="fait_entretien" || view==="employees" || view==="contrats") && (
             <div style={{marginBottom:"10px"}}>
-              <input type="text" value={posteSearch} onChange={handlePosteSearch} placeholder="Filtrer par poste" style={{padding:"5px 8px", borderRadius:"6px", border:"1px solid #ccc", width:"180px", fontSize:"13px"}} />
+              <input type="text" value={posteSearch} onChange={handlePosteSearch} placeholder="Filtrer par poste" style={{padding:"5px 8px", borderRadius:"6px", border:"1px solid #6693f3ff", width:"180px", fontSize:"13px"}} />
             </div>
           )}
 
@@ -389,13 +389,13 @@ const RHDashboard = () => {
                     <button
                       type="button"
                       onClick={()=>setShowContratForm(false)}
-                      className="px-3 py-1 border rounded hover:bg-gray-100"
+                      className="btn-cancel"
                     >
                       Annuler
                     </button>
                     <button
                       type="submit"
-                      className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                      className="btn-save"
                     >
                       Enregistrer
                     </button>

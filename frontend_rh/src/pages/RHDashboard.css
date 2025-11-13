@@ -382,3 +382,138 @@
   }
 }
 
+
+
+/* Bouton Retour à la vue d’ensemble */
+.back-btn {
+  background-color: #1E90FF;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Bouton + Créer Contrat */
+.create-contrat-btn {
+  background-color: #1E90FF;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.create-contrat-btn:hover {
+  background-color: #187bcd;
+}
+
+/* Table filtrable */
+.filterable-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.filterable-table th,
+.filterable-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.filterable-table th {
+  background-color: #f8f8f8;
+  font-weight: 600;
+}
+
+.filterable-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.filterable-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Input deselection par rang */
+.filterable-table + div input[type="text"] {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  width: 80px;
+  margin-right: 6px;
+}
+
+.filterable-table + div button {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.filterable-table + div button:hover {
+  background-color: #218838;
+}
+
+/* Titre tableau */
+.table-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Contrat form modal styling (already exists, optional) */
+
+
+
+
+
+
+
+
+
+/* Bouton Annuler (mena) */
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.btn-cancel:hover {
+  background-color: #b02a37;
+}
+
+/* Bouton Enregistrer (manga, mitovy style) */
+.btn-save {
+  background-color: #1E90FF;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.btn-save:hover {
+  background-color: #187bcd;
+}
