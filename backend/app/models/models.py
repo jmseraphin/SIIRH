@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON, Date, Boolean
 from sqlalchemy.orm import relationship
 from app.db import Base
+from datetime import date
 
 # =======================
 # MODELS
@@ -65,18 +66,34 @@ class Employee(Base):
     contrats = relationship("Contrat", back_populates="employee")
     absences = relationship("Absence", back_populates="employee", cascade="all, delete-orphan")
 
-
 class Paie(Base):
     __tablename__ = "paies"
     __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    
+    # Montant total payé (net)
     montant = Column(Float, nullable=False)
-    employee_id = Column(Integer, ForeignKey("employees.id"))
+
+    # Champs automatique / calcul
+    salaire_base = Column(Float, nullable=True)
+    primes = Column(Float, default=0.0)
+    heures_supp = Column(Float, default=0.0)
+    deductions = Column(Float, default=0.0)
+    absence_deduction = Column(Float, default=0.0)
+    salaire_net = Column(Float, nullable=True)
+
+    # Mois / année
+    mois = Column(String(20), nullable=False)
+    annee = Column(Integer, nullable=False)
+
+    # ⚠ Date de la paie
+    date_paie = Column(Date, nullable=False, default=date.today)
 
     employee = relationship("Employee", back_populates="paies")
 
-
+# ===================== MODELS =====================
 class Contrat(Base):
     __tablename__ = "contrats"
     __table_args__ = {"extend_existing": True}

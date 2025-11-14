@@ -104,7 +104,7 @@ import DashboardLayout from "./pages/RHDashboardLayout";
 import RHDashboard from "./pages/RHDashboard";
 import Employes from "./pages/Employes";
 import Contrats from "./pages/Contrats";
-import Paie from "./pages/Paie";
+import Paie from "./pages/Paie"
 import Rapports from "./pages/Rapports";
 import EntretienForm from "./pages/EntretienForm";
 import ListeEntretiens from "./pages/ListeEntretiens";
@@ -148,7 +148,7 @@ function App() {
             <Route path="employes" element={<Employes />} />
             <Route path="contrats" element={<Contrats />} />
             <Route path="paie" element={<Paie />} />
-            <Route path="rapports" element={<Rapports />} />
+             <Route path="Rapports" element={<Rapports />} />
             <Route path="absences" element={<Absences />} /> {/* ✅ Absences ajouté */}
             <Route path="entretien" element={<EntretienForm />} />
             <Route path="liste-entretiens" element={<ListeEntretiens />} />

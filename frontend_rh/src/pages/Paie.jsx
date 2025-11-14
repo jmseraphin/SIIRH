@@ -1,50 +1,71 @@
+// import { useEffect, useState } from "react";
+// import { getPaies } from "../api/paieApi";
+// import PaieForm from "../components/PaieForm";
+// import PaieTable from "../components/PaieTable";
+// import "../styles/paie.css";
+
+// export default function Paie() {
+//   const [paies, setPaies] = useState([]);
+
+//   const loadPaies = () => {
+//     getPaies().then((res) => setPaies(res.data));
+//   };
+
+//   useEffect(() => {
+//     loadPaies();
+//   }, []);
+
+//   return (
+//     <div className="paie-container">
+//       <h1 className="paie-title">Gestion de la Paie</h1>
+
+//       <div className="paie-card">
+//         <h2 className="paie-section-title">Ajouter une Paie</h2>
+//         <PaieForm onSaved={loadPaies} />
+//       </div>
+
+//       <div className="paie-card">
+//         <h2 className="paie-section-title">Liste des Paiements</h2>
+//         <PaieTable paies={paies} onDeleted={loadPaies} />
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
+
+
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getPaies } from "../api/paieApi";
+import PaieForm from "../components/PaieForm";
+import PaieTable from "../components/PaieTable";
+import "../styles/paie.css";
 
 export default function Paie() {
   const [paies, setPaies] = useState([]);
 
+  const loadPaies = () => {
+    getPaies().then((res) => setPaies(res.data));
+  };
+
   useEffect(() => {
-    const fetchPaies = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/api/paie/");
-        setPaies(res.data);
-      } catch (error) {
-        console.error("Erreur lors du chargement de la paie :", error);
-      }
-    };
-    fetchPaies();
+    loadPaies();
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Gestion de la Paie</h1>
-      <table className="w-full bg-white shadow rounded-lg">
-        <thead>
-          <tr className="bg-gray-100 text-left text-gray-700">
-            <th className="p-3">Employé</th>
-            <th className="p-3">Salaire</th>
-            <th className="p-3">Mois</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paies.length > 0 ? (
-            paies.map((p) => (
-              <tr key={p.id} className="border-t hover:bg-gray-50">
-                <td className="p-3">{p.employe_nom}</td>
-                <td className="p-3">{p.salaire} Ar</td>
-                <td className="p-3">{p.mois}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3" className="p-3 text-center text-gray-500">
-                Aucune fiche de paie trouvée.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className="paie-container">
+      <h1 className="paie-title">Gestion de la Paie</h1>
+
+      <div className="paie-card">
+        <h2 className="paie-section-title">Ajouter une Paie</h2>
+        <PaieForm onSaved={loadPaies} />
+      </div>
+
+      <div className="paie-card">
+        <h2 className="paie-section-title">Liste des Paiements</h2>
+        <PaieTable paies={paies} onDeleted={loadPaies} />
+      </div>
     </div>
   );
 }
