@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON, Date
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, JSON, Date, Boolean
 from sqlalchemy.orm import relationship
 from app.db import Base
 
@@ -16,7 +16,6 @@ class Offre(Base):
     competences = Column(Text, nullable=True)
     date_cloture = Column(String(50), nullable=True)
 
-    # Relation vers Candidature
     candidatures = relationship(
         "Candidature",
         back_populates="offre",
@@ -37,20 +36,16 @@ class Candidature(Base):
     parsed_json = Column(JSON, nullable=True)
     score = Column(Float, nullable=True)
     statut = Column(String(50), default="nouveau")
+    is_selected = Column(Boolean, default=False)
 
     offre_id = Column(Integer, ForeignKey("offres.id", ondelete="CASCADE"), nullable=False)
 
-    # back ref vers Offre
     offre = relationship("Offre", back_populates="candidatures")
-
-    # Relation vers Convocation
     convocations = relationship(
         "Convocation",
         back_populates="candidature",
         cascade="all, delete-orphan"
     )
-
-    # Relation optionally vers Employee
     employee = relationship("Employee", back_populates="candidature", uselist=False)
 
 
@@ -65,14 +60,10 @@ class Employee(Base):
     poste = Column(String(100), nullable=True)
     candidature_id = Column(Integer, ForeignKey("candidatures.id"), nullable=True)
 
-    # Relation vers Candidature
     candidature = relationship("Candidature", back_populates="employee")
-
-    # Relation vers Paie
     paies = relationship("Paie", back_populates="employee")
-
-    # Relation vers Contrat
     contrats = relationship("Contrat", back_populates="employee")
+    absences = relationship("Absence", back_populates="employee", cascade="all, delete-orphan")
 
 
 class Paie(Base):
@@ -83,7 +74,6 @@ class Paie(Base):
     montant = Column(Float, nullable=False)
     employee_id = Column(Integer, ForeignKey("employees.id"))
 
-    # back ref vers Employee
     employee = relationship("Employee", back_populates="paies")
 
 
@@ -98,7 +88,6 @@ class Contrat(Base):
     date_fin = Column(Date, nullable=True)
     salaire = Column(Float, nullable=True)
 
-    # back ref vers Employee
     employee = relationship("Employee", back_populates="contrats")
 
 
@@ -111,21 +100,37 @@ class Utilisateur(Base):
     password = Column(String(255), nullable=False)
 
 
-# ======= Convocation (Fanitsiana) =======
 class Convocation(Base):
     __tablename__ = "convocations"
     __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True, index=True)
-    date_entretien = Column(String(50), nullable=True)   # ✅ date entretien
-    heure_entretien = Column(String(50), nullable=True)  # ✅ heure entretien
-    lieu_entretien = Column(String(255), nullable=True)  # ✅ lieu entretien
-    status = Column(String(50), nullable=True)           # ✅ status convocation
-    lien_fichier = Column(String(255), nullable=True)    # ✅ chemin PDF si tiana
+    date_entretien = Column(String(50), nullable=True)
+    heure_entretien = Column(String(50), nullable=True)
+    lieu_entretien = Column(String(255), nullable=True)
+    status = Column(String(50), nullable=True)
+    lien_fichier = Column(String(255), nullable=True)
     candidature_id = Column(Integer, ForeignKey("candidatures.id"))
 
-    # back ref vers Candidature
     candidature = relationship("Candidature", back_populates="convocations")
+
+
+# =======================
+# 🔹 Modèle Absence (mis à jour)
+# =======================
+class Absence(Base):
+    __tablename__ = "absences"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    type_absence = Column(String(50), nullable=False)
+    date_debut = Column(Date, nullable=False)
+    date_fin = Column(Date, nullable=False)
+    motif = Column(String(255), nullable=True)
+    statut = Column(String(50), default="en attente")
+
+    employee = relationship("Employee", back_populates="absences")
 
 
 # =======================
@@ -139,4 +144,5 @@ __all__ = [
     "Offre",
     "Candidature",
     "Convocation",
+    "Absence",
 ]
