@@ -29,18 +29,45 @@
 .card.red { background-color: #ef4444; }
 .card.yellow { background-color: #f59e0b; }
 
-/* Filtre */
+/* --- FILTRE --- */
 .rapports-filters {
+  margin: 25px 0 35px 0; /* tonga afovoany tsara */
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  justify-content: center; /* CENTRÉ tsara */
+  width: 100%;
 }
-.rapports-filters input {
-  flex: 1;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 350px; /* kely tsara, tsy lava loatra */
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 10px 12px 10px 42px; /* place icone */
   border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  transition: 0.2s ease;
+  text-align: center; /* PLACEHOLDER CENTRÉ */
+}
+
+.search-wrapper input:focus {
+  border-color: #0099ff;
+  box-shadow: 0 0 4px rgba(0, 153, 255, 0.4);
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  background: #e1f3ff;
+  padding: 6px;
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 /* Export buttons */
@@ -108,4 +135,65 @@
 }
 .rapports-tables tr:hover {
   background-color: #f9fafb;
+}
+
+/* Toggle Bouton */
+.toggle-btn {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #007bff;
+  color: white;
+  border: 1px solid #d0d0d0;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.toggle-btn:hover {
+  background: #0069d9;
+}
+.toggle-btn-container {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.toggle-btn {
+  margin-left: 10px;
+  margin-top: 6px;
+}
+
+
+
+
+/* ----------- FIX CENTRAGE & STYLE SEARCH ----------- */
+
+.search-wrapper {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 350px !important;
+  margin: 30px 0 12px 0;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.search-wrapper input {
+  width: 100% !important;
+  padding: 10px 12px 10px 42px !important; /* toerana ho an’ny icone */
+  border: 1px solid #ccc !important;
+  border-radius: 25px !important;
+  text-align: center !important; /* centrage placeholder */
+}
+
+.search-wrapper input::placeholder {
+  text-align: center !important;
+}
+
+.search-icon {
+  position: absolute !important;
+  top: 40% !important;
+  left: 14px !important;
+  transform: translateY(-50%) !important;
+  font-size: 16px !important;
+  background: #e1f3ff !important;
+  padding: 6px !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
 }
