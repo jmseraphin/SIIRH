@@ -12,6 +12,11 @@
 //   const [globalFilter, setGlobalFilter] = useState("");
 //   const [exportDropdown, setExportDropdown] = useState({ employes: false, contrats: false, paie: false });
 
+//   // NEW : states pour cacher/afficher tableaux
+//   const [showEmployes, setShowEmployes] = useState(false);
+//   const [showContrats, setShowContrats] = useState(false);
+//   const [showPaies, setShowPaies] = useState(false);
+
 //   const fetchData = async () => {
 //     try {
 //       const [empRes, contRes, paieRes, contExpRes] = await Promise.all([
@@ -43,10 +48,7 @@
 //       const url = window.URL.createObjectURL(new Blob([res.data]));
 //       const link = document.createElement("a");
 //       link.href = url;
-//       link.setAttribute(
-//         "download",
-//         `rapport_${endpoint}.${format === "excel" ? "xlsx" : "pdf"}`
-//       );
+//       link.setAttribute("download", `rapport_${endpoint}.${format === "excel" ? "xlsx" : "pdf"}`);
 //       document.body.appendChild(link);
 //       link.click();
 //       link.remove();
@@ -75,6 +77,7 @@
 
 //   return (
 //     <div className="rapports-container">
+
 //       {/* Résumé */}
 //       <div className="rapports-summary">
 //         <div className="card blue">
@@ -107,8 +110,9 @@
 //         </div>
 //       </div>
 
-//       {/* Barre de recherche globale */}
-//       <div className="rapports-filters">
+//       {/* Barre de recherche */}
+//       <div className="search-wrapper">
+//         <span className="search-icon">🔍</span>
 //         <input
 //           type="text"
 //           placeholder="Rechercher..."
@@ -136,102 +140,118 @@
 
 //       {/* Tables */}
 //       <div className="rapports-tables">
+
+//         {/* EMPLOYES */}
 //         <section>
-//           <h2>Employés</h2>
-//           <div className="overflow-x-auto">
-//             <table>
-//               <thead>
-//                 <tr>
-//                   {["ID", "Nom complet", "Email", "Poste"].map((h) => <th key={h}>{h}</th>)}
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {filteredEmployes.map((e) => (
-//                   <tr key={e.id}>
-//                     <td>{e.id}</td>
-//                     <td>{e.fullname}</td>
-//                     <td>{e.email}</td>
-//                     <td>{e.poste}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
+//           <h2>
+//             Employés
+//             <button
+//               className="toggle-btn"
+//               onClick={() => setShowEmployes(!showEmployes)}
+//             >
+//               {showEmployes ? "Cacher" : "Afficher"}
+//             </button>
+//           </h2>
+
+//           {showEmployes && (
+//             <div className="overflow-x-auto">
+//               <table>
+//                 <thead>
+//                   <tr>{["ID", "Nom complet", "Email", "Poste"].map((h) => <th key={h}>{h}</th>)}</tr>
+//                 </thead>
+//                 <tbody>
+//                   {filteredEmployes.map((e) => (
+//                     <tr key={e.id}>
+//                       <td>{e.id}</td>
+//                       <td>{e.fullname}</td>
+//                       <td>{e.email}</td>
+//                       <td>{e.poste}</td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               </table>
+//             </div>
+//           )}
 //         </section>
 
+//         {/* CONTRATS */}
 //         <section>
-//           <h2>Contrats</h2>
-//           <div className="overflow-x-auto">
-//             <table>
-//               <thead>
-//                 <tr>
-//                   {["ID", "Employé", "Type", "Date début", "Date fin", "Salaire"].map((h) => <th key={h}>{h}</th>)}
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {filteredContrats.map((c) => (
-//                   <tr key={c.ID}>
-//                     <td>{c.ID}</td>
-//                     <td>{c.Employé}</td>
-//                     <td>{c.Type}</td>
-//                     <td>{c["Date début"]}</td>
-//                     <td>{c["Date fin"]}</td>
-//                     <td>{c.Salaire}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
+//           <h2>
+//             Contrats
+//             <button
+//               className="toggle-btn"
+//               onClick={() => setShowContrats(!showContrats)}
+//             >
+//               {showContrats ? "Cacher" : "Afficher"}
+//             </button>
+//           </h2>
+
+//           {showContrats && (
+//             <div className="overflow-x-auto">
+//               <table>
+//                 <thead>
+//                   <tr>{["ID", "Employé", "Type", "Date début", "Date fin", "Salaire"].map((h) => <th key={h}>{h}</th>)}</tr>
+//                 </thead>
+//                 <tbody>
+//                   {filteredContrats.map((c) => (
+//                     <tr key={c.ID}>
+//                       <td>{c.ID}</td>
+//                       <td>{c.Employé}</td>
+//                       <td>{c.Type}</td>
+//                       <td>{c["Date début"]}</td>
+//                       <td>{c["Date fin"]}</td>
+//                       <td>{c.Salaire}</td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               </table>
+//             </div>
+//           )}
 //         </section>
 
+//         {/* PAIE */}
 //         <section>
-//           <h2>Paie</h2>
-//           <div className="overflow-x-auto">
-//             <table>
-//               <thead>
-//                 <tr>
-//                   {["ID", "Employé", "Date de paie", "Salaire de base", "Primes", "Déduction", "Salaire net"].map(
-//                     (h) => <th key={h}>{h}</th>
-//                   )}
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {filteredPaies.map((p) => (
-//                   <tr key={p.ID}>
-//                     <td>{p.ID}</td>
-//                     <td>{p.Employé}</td>
-//                     <td>{p["Date de paie"]}</td>
-//                     <td>{p["Salaire de base"]}</td>
-//                     <td>{p.Primes}</td>
-//                     <td>{p.Déduction}</td>
-//                     <td>{p["Salaire net"]}</td>
+//           <h2>
+//             Paie
+//             <button
+//               className="toggle-btn"
+//               onClick={() => setShowPaies(!showPaies)}
+//             >
+//               {showPaies ? "Cacher" : "Afficher"}
+//             </button>
+//           </h2>
+
+//           {showPaies && (
+//             <div className="overflow-x-auto">
+//               <table>
+//                 <thead>
+//                   <tr>
+//                     {["ID", "Employé", "Date de paie", "Salaire de base", "Primes", "Déduction", "Salaire net"].map(
+//                       (h) => <th key={h}>{h}</th>)}
 //                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
+//                 </thead>
+//                 <tbody>
+//                   {filteredPaies.map((p) => (
+//                     <tr key={p.ID}>
+//                       <td>{p.ID}</td>
+//                       <td>{p.Employé}</td>
+//                       <td>{p["Date de paie"]}</td>
+//                       <td>{p["Salaire de base"]}</td>
+//                       <td>{p.Primes}</td>
+//                       <td>{p.Déduction}</td>
+//                       <td>{p["Salaire net"]}</td>
+//                     </tr>
+//                   ))}
+//                 </tbody>
+//               </table>
+//             </div>
+//           )}
 //         </section>
+
 //       </div>
 //     </div>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -258,7 +278,6 @@ export default function Rapports() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [exportDropdown, setExportDropdown] = useState({ employes: false, contrats: false, paie: false });
 
-  // NEW : states pour cacher/afficher tableaux
   const [showEmployes, setShowEmployes] = useState(false);
   const [showContrats, setShowContrats] = useState(false);
   const [showPaies, setShowPaies] = useState(false);
@@ -304,17 +323,20 @@ export default function Rapports() {
   };
 
   const filteredEmployes = employes.filter((e) =>
-    ["fullname", "email", "poste"].some(
-      (key) => e[key]?.toLowerCase().includes(globalFilter.toLowerCase())
-    )
+    [e.nom + " " + e.prenom, e.email, e.poste]
+      .some((v) => v?.toLowerCase().includes(globalFilter.toLowerCase()))
   );
 
   const filteredContrats = contrats.filter((c) =>
-    ["Employé", "Type"].some((key) => c[key]?.toLowerCase().includes(globalFilter.toLowerCase()))
+    ["Employé", "Type"].some(
+      (key) => c[key]?.toLowerCase().includes(globalFilter.toLowerCase())
+    )
   );
 
   const filteredPaies = paies.filter((p) =>
-    ["Employé"].some((key) => p[key]?.toLowerCase().includes(globalFilter.toLowerCase()))
+    ["Employé"].some(
+      (key) => p[key]?.toLowerCase().includes(globalFilter.toLowerCase())
+    )
   );
 
   const toggleDropdown = (key) => {
@@ -356,7 +378,7 @@ export default function Rapports() {
         </div>
       </div>
 
-      {/* Barre de recherche */}
+      {/* Recherche */}
       <div className="search-wrapper">
         <span className="search-icon">🔍</span>
         <input
@@ -367,7 +389,7 @@ export default function Rapports() {
         />
       </div>
 
-      {/* Export buttons */}
+      {/* Export */}
       <div className="rapports-download">
         {["employes", "contrats", "paie"].map((item) => (
           <div key={item} className="export-wrapper">
@@ -391,10 +413,7 @@ export default function Rapports() {
         <section>
           <h2>
             Employés
-            <button
-              className="toggle-btn"
-              onClick={() => setShowEmployes(!showEmployes)}
-            >
+            <button className="toggle-btn" onClick={() => setShowEmployes(!showEmployes)}>
               {showEmployes ? "Cacher" : "Afficher"}
             </button>
           </h2>
@@ -403,13 +422,13 @@ export default function Rapports() {
             <div className="overflow-x-auto">
               <table>
                 <thead>
-                  <tr>{["ID", "Nom complet", "Email", "Poste"].map((h) => <th key={h}>{h}</th>)}</tr>
+                  <tr><th>ID</th><th>Nom complet</th><th>Email</th><th>Poste</th></tr>
                 </thead>
                 <tbody>
                   {filteredEmployes.map((e) => (
                     <tr key={e.id}>
                       <td>{e.id}</td>
-                      <td>{e.fullname}</td>
+                      <td>{e.nom} {e.prenom}</td>
                       <td>{e.email}</td>
                       <td>{e.poste}</td>
                     </tr>
@@ -424,10 +443,7 @@ export default function Rapports() {
         <section>
           <h2>
             Contrats
-            <button
-              className="toggle-btn"
-              onClick={() => setShowContrats(!showContrats)}
-            >
+            <button className="toggle-btn" onClick={() => setShowContrats(!showContrats)}>
               {showContrats ? "Cacher" : "Afficher"}
             </button>
           </h2>
@@ -459,10 +475,7 @@ export default function Rapports() {
         <section>
           <h2>
             Paie
-            <button
-              className="toggle-btn"
-              onClick={() => setShowPaies(!showPaies)}
-            >
+            <button className="toggle-btn" onClick={() => setShowPaies(!showPaies)}>
               {showPaies ? "Cacher" : "Afficher"}
             </button>
           </h2>
@@ -472,8 +485,9 @@ export default function Rapports() {
               <table>
                 <thead>
                   <tr>
-                    {["ID", "Employé", "Date de paie", "Salaire de base", "Primes", "Déduction", "Salaire net"].map(
-                      (h) => <th key={h}>{h}</th>)}
+                    {["ID", "Employé", "Date de paie", "Salaire de base", "Primes", "Déduction", "Salaire net"].map((h) => (
+                      <th key={h}>{h}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>

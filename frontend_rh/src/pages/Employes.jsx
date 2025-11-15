@@ -80,17 +80,15 @@ export default function Employes() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
-        Liste des Employés
-      </h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Liste des Employés</h1>
 
       <table className="w-full bg-white shadow rounded-lg">
         <thead>
           <tr className="bg-gray-100 text-left text-gray-700">
-            <th className="p-3">Nom</th>
+            <th className="p-3">Nom complet</th>
             <th className="p-3">Poste</th>
-            <th className="p-3">Département</th>
-            <th className="p-3">Date d'embauche</th>
+            <th className="p-3">Email</th>
+            <th className="p-3">Téléphone</th>
           </tr>
         </thead>
 
@@ -100,8 +98,8 @@ export default function Employes() {
               <tr key={emp.id} className="border-t hover:bg-gray-50">
                 <td className="p-3">{emp.nom} {emp.prenom}</td>
                 <td className="p-3">{emp.poste}</td>
-                <td className="p-3">-</td>
-                <td className="p-3">-</td>
+                <td className="p-3">{emp.email}</td>
+                <td className="p-3">{emp.phone}</td>
               </tr>
             ))
           ) : (
