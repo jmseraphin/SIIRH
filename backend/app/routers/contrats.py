@@ -1,4 +1,3 @@
-# backend/app/routers/contrats.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db import get_db
@@ -8,7 +7,7 @@ from app.schemas import ContratCreate, ContratOut
 router = APIRouter(tags=["Contrats"])
 
 # ============================
-# 📌 Créer un contrat
+#  Créer un contrat
 # ============================
 @router.post("/", response_model=ContratOut)
 def create_contrat(contrat: ContratCreate, db: Session = Depends(get_db)):
@@ -31,7 +30,7 @@ def create_contrat(contrat: ContratCreate, db: Session = Depends(get_db)):
 
 
 # ============================
-# 📋 Lister tous les contrats avec nom complet et poste
+#  Lister tous les contrats avec nom complet et poste
 # ============================
 @router.get("/")
 def get_contrats(db: Session = Depends(get_db)):

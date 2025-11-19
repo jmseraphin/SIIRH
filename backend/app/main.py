@@ -319,20 +319,22 @@ from pathlib import Path
 from typing import Optional
 from datetime import datetime
 from app.routers import candidature_rh, convocation
-from app.models.models import Offre, Candidature
-
+from app.models.models import Candidature
+from app.models.offres import Offre
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import sqlalchemy
 
 from app.db import Base, engine
-from app.routers import employees, contrats, paie, auth, candidature_rh, absences
-from app.routers import convocation
+from app.routers import employees, contrats, paie, auth, absences
 from app.routers import scoring
 from app.routers import offres
 
 from app.services.upload_service import save_upload_file
 from app.routers import rapports  # ✅ nouveau import
+from app.routers import notifications
+from app.routers import discipline
+from app.routers import soldes, export_paie
 
 # ==========================================================
 # 🚀 CONFIGURATION GÉNÉRALE
@@ -370,12 +372,17 @@ app.include_router(employees.router, prefix="/api/employes", tags=["Employés"])
 app.include_router(contrats.router, prefix="/api/contrats", tags=["Contrats"])
 app.include_router(paie.router)
 app.include_router(auth.router, prefix="/auth", tags=["Authentification"])
-app.include_router(rapports.router, prefix="/api/rapports", tags=["Rapports RH"])  # ✅ Rapports ajouté
+app.include_router(rapports.router, prefix="/api/rapports", tags=["Rapports RH"]) 
 app.include_router(convocation.router)
 app.include_router(candidature_rh.router, prefix="/rh", tags=["Candidatures RH"])
 app.include_router(scoring.router)
 app.include_router(offres.router, prefix="/api/offres", tags=["Offres"])
 app.include_router(absences.router, prefix="/api/absences", tags=["Absences"])
+app.include_router(notifications.router, prefix="/rh", tags=["Notifications"])
+app.include_router(discipline.router)
+app.include_router(soldes.router)
+app.include_router(export_paie.router)
+
 
 # ==========================================================
 # 🧾 FORMULAIRE DE CANDIDATURE
@@ -612,3 +619,11 @@ async def create_offre(data: OffreSchema):
 @app.get("/api/test")
 async def test_connection():
     return {"message": "✅ Backend connecté avec succès !"}
+
+
+
+
+
+
+
+

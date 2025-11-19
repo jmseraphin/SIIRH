@@ -178,3 +178,198 @@ input[list] {
   background-color: #eee;
   color: #1d4ed8; /* loko rehefa hover */
 }
+
+
+
+
+/* Absences.css => azo ampiasaina ho an'ny module feno Temps & Absences */
+
+/* ------------------- Page ------------------- */
+.temps-absences-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* ------------------- Header ------------------- */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.tabs button:hover {
+  background: #0056b3;
+}
+
+.tabs button:focus {
+  outline: none;
+}
+
+/* ------------------- Forms ------------------- */
+.tab-content form {
+  background: #fff;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tab-content form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tab-content form input,
+.tab-content form select {
+  padding: 6px 8px;
+  font-size: 14px;
+  margin-top: 4px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Form Buttons */
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #ccc;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #999;
+}
+
+.form-buttons button[type="submit"] {
+  background: #28a745;
+  color: #fff;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background: #218838;
+}
+
+/* ------------------- Tables ------------------- */
+.tab-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tab-content table th,
+.tab-content table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.tab-content table th {
+  background: #007bff;
+  color: #fff;
+}
+
+.tab-content table tr:hover {
+  background: #f1f1f1;
+}
+
+.tab-content table td button {
+  margin-right: 5px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tab-content table td button:hover {
+  opacity: 0.8;
+}
+
+.tab-content table td button:first-child {
+  background: #ffc107;
+  color: #fff;
+}
+
+.tab-content table td button:last-child {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* ------------------- Export Button ------------------- */
+.tab-content h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.tab-content button {
+  padding: 8px 16px;
+  border: none;
+  background: #17a2b8;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.tab-content button:hover {
+  background: #117a8b;
+}
+
+/* ------------------- Responsive ------------------- */
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .tab-content table th,
+  .tab-content table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+}

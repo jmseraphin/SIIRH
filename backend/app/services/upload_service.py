@@ -3,9 +3,10 @@ from datetime import datetime
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 from app.models.cv_files import CVFile
-from app.models import Candidature, Offre
+from app.models import Candidature
 from app.services.parsing import parse_docx, parse_pdf, extract_info
 from app.services.scoring_auto import calculer_score_auto
+from app.models.offres import Offre
 
 UPLOAD_DIR = "uploads"
 

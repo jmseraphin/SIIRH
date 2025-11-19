@@ -1,4 +1,3 @@
-# app/routers/candidatures.py
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from datetime import datetime

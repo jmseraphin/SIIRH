@@ -1,50 +1,50 @@
-from fastapi import APIRouter, HTTPException
+# app/routers/offres.py
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi import Depends
 from app.db import get_db
-from app.models.models import Offre
-from app.services.pdf_service import generate_offre_pdf
+from app.schemas.offre import OffreCreate, OffreResponse
+from app.models.offres import Offre
+from app.utils.offre_ref import generate_job_reference
 
-router = APIRouter()
+router = APIRouter(tags=["Offres"])
 
-# 🔹 Create / update offre
-@router.post("/")
-def create_offre(data: dict, db: Session = Depends(get_db)):
-    try:
-        new_offre = Offre(**data)
-        db.add(new_offre)
-        db.commit()
-        db.refresh(new_offre)
-        return {"message": "Offre créée avec succès", "id": new_offre.id}
-    except Exception as e:
-        db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+@router.post("", response_model=OffreResponse)
+def create_offre(offre_data: OffreCreate, db: Session = Depends(get_db)):
 
-# 🔹 Active / scoring automatique
-@router.post("/activate/{offre_id}")
-def activate_offre(offre_id: int, db: Session = Depends(get_db)):
-    offre = db.query(Offre).filter(Offre.id==offre_id).first()
-    if not offre:
-        raise HTTPException(status_code=404, detail="Offre non trouvée")
-    
-    offre.active = True
+    # Générer la référence
+    job_ref = generate_job_reference(db)
+
+    # Créer l'objet Offre
+    new_offre = Offre(
+        job_ref=job_ref,
+        title=offre_data.title,
+        department=offre_data.department,
+        site=offre_data.site,
+        contract_type=offre_data.contract_type,
+        creation_date=offre_data.creation_date,
+        mission=offre_data.mission,
+        activities_public=offre_data.activities_public,
+        goals=offre_data.goals,
+        education_level=offre_data.education_level,
+        exp_required_years=offre_data.exp_required_years,
+        w_skills=offre_data.w_skills,
+        w_exp=offre_data.w_exp,
+        w_edu=offre_data.w_edu,
+        w_proj=offre_data.w_proj,
+        threshold=offre_data.threshold,
+        scoring_config_path=offre_data.scoring_config_path,
+        deadline=offre_data.deadline,
+        apply_link=offre_data.apply_link
+    )
+
+    # Sauvegarder les champs JSON
+    new_offre.set_tech_skills(offre_data.tech_skills)
+    new_offre.set_soft_skills(offre_data.soft_skills)
+    new_offre.set_langs_lvl(offre_data.langs_lvl)
+
+    # Ajouter à la session et commit
+    db.add(new_offre)
     db.commit()
-    db.refresh(offre)
+    db.refresh(new_offre)
 
-    # Ici, déclenche le scoring automatique sur les candidatures
-    # Exemple: score_candidates_for_offre(offre, db)
-    return {"message": "Offre activée et scoring automatique déclenché"}
-
-# 🔹 Génération PDF / texte publique
-@router.get("/export/{offre_id}")
-def export_offre_pdf(offre_id: int, db: Session = Depends(get_db)):
-    offre = db.query(Offre).filter(Offre.id==offre_id).first()
-    if not offre:
-        raise HTTPException(status_code=404, detail="Offre non trouvée")
-
-    if not offre.active:
-        raise HTTPException(status_code=400, detail="Offre non activée")
-
-    data = {c.name: getattr(offre, c.name) for c in offre.__table__.columns}
-    pdf_path = generate_offre_pdf(data)
-    return {"message": "PDF généré avec succès", "path": pdf_path}
+    return new_offre

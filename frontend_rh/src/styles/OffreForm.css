@@ -1,152 +1,165 @@
-/* .offre-form-container {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  max-width: 900px;
-  margin: 30px auto;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+/* OffresForm.css */
+
+/* Conteneur global */
+.offre-form-container {
+  max-width: 1000px;
+  margin: auto;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem;
+  background-color: #f9fafb;
 }
 
+/* Titre principal */
 .offre-form-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #065f46; /* vert SIIRH */
+  margin-bottom: 2rem;
   text-align: center;
-  color: #006400;
-  margin-bottom: 20px;
 }
 
-.offre-form label {
-  display: block;
+/* Sous-titres de section */
+.offre-form-container h3 {
+  font-size: 1.2rem;
   font-weight: 600;
-  margin-top: 15px;
-  color: #006400;
+  color: #047857; /* vert foncé */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #d1fae5;
+  padding-bottom: 0.2rem;
 }
 
-.offre-form input[type="text"],
-.offre-form input[type="number"],
-.offre-form input[type="date"],
-.offre-form textarea {
+/* Wrapper champ + label */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;       /* elanelana eo label sy input */
+  margin-bottom: 1rem; /* elanelana eo champs tsirairay */
+}
+
+/* Champs input / textarea / select */
+.offre-form-container input,
+.offre-form-container select,
+.offre-form-container textarea {
   width: 100%;
-  padding: 8px 12px;
-  margin-top: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  background-color: #f9fafb;
+  transition: all 0.2s;
 }
 
-.offre-form textarea {
-  min-height: 70px;
+/* Focus */
+.offre-form-container input:focus,
+.offre-form-container textarea:focus,
+.offre-form-container select:focus {
+  outline: none;
+  border-color: #10b981; /* vert focus */
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  background-color: #ffffff;
+}
+
+/* Textarea */
+.offre-form-container textarea {
+  min-height: 80px;
   resize: vertical;
 }
 
-.button-group {
+/* Boutons */
+.offre-form-container button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+/* Sliders personnalisés */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: #d1d5db;
+  outline: none;
+  padding: 0;
+  margin: 0.3rem 0 1rem 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #10b981;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #059669;
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #10b981;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+/* Label sliders */
+.slider-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #065f46;
+  margin-bottom: 0.25rem;
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px;
 }
 
-.generate-btn, .publish-btn, .export-btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
+/* Container sliders scoring automatique */
+.scoring-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #ecfdf5;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #10b981;
 }
 
-.generate-btn { background-color: #f0f0f0; color: #006400; }
-.publish-btn { background-color: #006400; color: #fff; }
-.export-btn { background-color: #004d00; color: #fff; }
-
-.offre-preview {
-  margin-top: 20px;
+/* Textarea résultat généré */
+.offre-form-container textarea[readonly] {
+  background-color: #f3f4f6;
+  color: #111827;
+  font-family: 'Courier New', monospace;
+  min-height: 200px;
 }
 
-.offre-preview textarea {
+/* Responsive */
+@media (max-width: 768px) {
+  .offre-form-container form {
+    grid-template-columns: 1fr !important;
+  }
+  .scoring-container {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Uniformiser largeur label+input */
+.scoring-container .form-field,
+.offre-form-container .form-field {
   width: 100%;
-  height: 250px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  background: #f9fff9;
-  resize: none;
-} */
-
-
-
-.offre-form-container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  color: #333;
-}
-
-.offre-form label {
-  display: block;
-  font-weight: 600;
-  margin-top: 15px;
-}
-
-.offre-form input,
-.offre-form textarea,
-.offre-form select {
-  width: 100%;
-  padding: 8px 1px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.offre-form textarea {
-  resize: vertical;
-  min-height: 60px;
-}
-
-.button-group {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
-
-.generate-btn,
-.publish-btn,
-.export-btn {
-  background-color: #4caf50;
-  color: #fff;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.generate-btn:hover,
-.publish-btn:hover,
-.export-btn:hover {
-  background-color: #45a049;
-}
-
-.offre-preview {
-  margin-top: 20px;
-}
-
-.offre-preview textarea {
-  width: 100%;
-  min-height: 150px;
-  border: 1px solid #4caf50;
-  border-radius: 6px;
-  padding: 10px;
-  background-color: #f0fff0;
-}
-
-.offre-form select {
-  width: 100%;
-  padding: 8px 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: #fff;
-  appearance: none; /* esorina ny default arrow raha tianao */
 }

@@ -517,3 +517,76 @@
 .btn-save:hover {
   background-color: #187bcd;
 }
+
+
+
+
+
+
+
+/* ====== WRAPPER PRINCIPAL ====== */
+.header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.12);
+    margin-bottom: 18px;
+}
+
+/* ====== TITRE PRINCIPAL ====== */
+.header-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+/* ====== CONTAINER ICONES DROITE ====== */
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+/* ====== ICONE NOTIFICATION ====== */
+.noti-icon-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.noti-icon {
+    font-size: 28px;
+    color: #444;
+}
+
+/* ====== BADGE ROUGE NOMBRE ====== */
+.noti-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: red;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* ====== ICONE RÔLE (HOMME/FEMME) ====== */
+.role-icon {
+    font-size: 31px;
+    color: #444;
+}
+
+/* ====== ICONE PARAMÈTRE ====== */
+.settings-icon {
+    font-size: 31px;
+    color: #444;
+}

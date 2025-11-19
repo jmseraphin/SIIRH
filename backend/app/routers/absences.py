@@ -21,8 +21,8 @@ def create_absence(absence: AbsenceCreate, db: Session = Depends(get_db)):
     
     new_absence = Absence(
         employee_id=absence.employee_id,
-        date_debut=absence.date_debut,   # ✅ fanovana
-        date_fin=absence.date_fin,       # ✅ fanovana
+        date_debut=absence.date_debut,   
+        date_fin=absence.date_fin,       
         type_absence=absence.type_absence,
         motif=absence.motif,
         statut=absence.statut or "en attente"

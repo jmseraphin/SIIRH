@@ -14,7 +14,7 @@ export default function CovoqueListe() {
       const res = await fetch("http://127.0.0.1:8000/rh/candidatures");
       if (!res.ok) throw new Error("Erreur chargement convoqués");
       const data = await res.json();
-      // Filtrer ireo efa voaconvoque
+   
       setConvoques(data.filter(c => c.statut === "Convoqué"));
       setLoading(false);
     } catch (err) {

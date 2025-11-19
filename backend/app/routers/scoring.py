@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db import get_db
-from app.models import Candidature, Offre
+from app.models import Candidature
 from app.services.scoring_auto import calculer_score_auto
+from app.models.offres import Offre
 
 router = APIRouter(prefix="/api/score", tags=["Score"])
 

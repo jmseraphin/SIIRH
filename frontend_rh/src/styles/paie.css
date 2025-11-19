@@ -51,18 +51,47 @@
   box-sizing: border-box;
 }
 
-.paie-btn {
-  grid-column: span 2;
-  background: #1e90ff;
+/* ---- FORM BUTTONS ---- */
+.btn-annuler {
+  background: #d9534f;
   color: white;
-  padding: 12px;
   border: none;
+  padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 }
 
-.paie-btn:hover {
+.btn-annuler:hover {
+  background: #c9302c;
+}
+
+.btn-enregistrer {
+  background: #1e90ff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-enregistrer:hover {
+  background: #0b6ac5;
+}
+
+/* ---- ADD BUTTON TOP ---- */
+.btn-ajout {
+  background: #1e90ff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-ajout:hover {
   background: #0b6ac5;
 }
 
@@ -71,7 +100,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
-  table-layout: fixed; /* mba tsy hivoaka ny texte */
+  table-layout: fixed;
 }
 
 .paie-table th,
@@ -79,7 +108,7 @@
   padding: 12px;
   border: 1px solid #ddd;
   text-align: center;
-  word-wrap: break-word; /* mamela ny texte hiforona ao anaty cellule */
+  word-wrap: break-word;
 }
 
 .paie-table th {
@@ -105,12 +134,141 @@
   background: #c9302c;
 }
 
+/* ---- MODAL OVERLAY ---- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal-content form {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
   .paie-form {
-    grid-template-columns: 1fr; /* form mitsangana rehefa écran kely */
+    grid-template-columns: 1fr;
   }
-  .paie-btn {
-    grid-column: span 1;
-  }
+}
+
+
+
+
+/* ----- MODAL TITLE ----- */
+.modal-content h2.paie-section-title {
+  margin-bottom: 20px; /* mitokana kely avy amin'ny champ */
+  text-align: center;   /* eo afovoany ny titre */
+  font-size: 22px;
+}
+
+/* ----- LABELS ----- */
+.paie-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px; /* kely kokoa mba hifanakaiky amin'ny input */
+}
+
+/* ----- INPUTS ----- */
+.paie-form input,
+.paie-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  margin-bottom: 15px; /* mitokana tsara ny champs */
+}
+
+/* ----- MODAL CONTAINER ----- */
+.modal-content {
+  background: #fff;
+  padding: 20px 25px; /* kely kokoa ny padding ho compact */
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 450px; /* tsy dia be velarana */
+}
+
+
+
+
+
+
+
+/* ---- SEARCHABLE EMPLOYE DROPDOWN ---- */
+.paie-form div[style*="position: relative"] ul {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: #fff;
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  z-index: 1000;
+}
+
+/* Dropdown list items */
+.paie-form div[style*="position: relative"] ul li {
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+/* Hover effect */
+.paie-form div[style*="position: relative"] ul li:hover {
+  background-color: #1e90ff;
+  color: #fff;
+}
+
+/* Scrollbar custom */
+.paie-form div[style*="position: relative"] ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.paie-form div[style*="position: relative"] ul::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.paie-form div[style*="position: relative"] ul::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
+/* Ensure input has same padding & border as existing form style */
+.paie-form input[type="text"] {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  width: 100%;
+  margin-bottom: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.paie-form input[type="text"]:focus {
+  outline: none;
+  border-color: #1e90ff;
+  box-shadow: 0 0 5px rgba(30,144,255,0.4);
 }
