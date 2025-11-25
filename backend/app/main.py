@@ -310,9 +310,6 @@
 
 
 
-
-
-
 import os
 import shutil
 from pathlib import Path
@@ -326,16 +323,18 @@ from fastapi.middleware.cors import CORSMiddleware
 import sqlalchemy
 
 from app.db import Base, engine
-from app.routers import employees, contrats, paie, auth, absences
+from app.routers import employees, contrats, paie, auth
 from app.routers import scoring
 from app.routers import offres
+from fastapi.staticfiles import StaticFiles
 
 from app.services.upload_service import save_upload_file
 from app.routers import rapports  # ✅ nouveau import
 from app.routers import notifications
 from app.routers import discipline
 from app.routers import soldes, export_paie
-
+from app.routers import time_entries, leaves, payroll, absences
+from app.routers.pointages import router as pointages_router 
 # ==========================================================
 # 🚀 CONFIGURATION GÉNÉRALE
 # ==========================================================
@@ -349,7 +348,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,      # na ["*"] raha dev fotsiny
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -377,12 +376,20 @@ app.include_router(convocation.router)
 app.include_router(candidature_rh.router, prefix="/rh", tags=["Candidatures RH"])
 app.include_router(scoring.router)
 app.include_router(offres.router, prefix="/api/offres", tags=["Offres"])
-app.include_router(absences.router, prefix="/api/absences", tags=["Absences"])
 app.include_router(notifications.router, prefix="/rh", tags=["Notifications"])
 app.include_router(discipline.router)
 app.include_router(soldes.router)
 app.include_router(export_paie.router)
 
+# 🔹 Nouveaux modules Temps & Absences
+app.include_router(absences.router)          # /api/absences
+app.include_router(pointages_router)
+app.include_router(time_entries.router)      # /api/pointages
+app.include_router(leaves.router)          # /api/conges
+app.include_router(payroll.router)           # /api/payroll
+
+# Static files
+app.mount("/exports", StaticFiles(directory="app/exports"), name="exports")
 
 # ==========================================================
 # 🧾 FORMULAIRE DE CANDIDATURE

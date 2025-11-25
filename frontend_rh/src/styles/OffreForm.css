@@ -35,6 +35,7 @@
   flex-direction: column;
   gap: 0.25rem;       /* elanelana eo label sy input */
   margin-bottom: 1rem; /* elanelana eo champs tsirairay */
+  width: 100%;
 }
 
 /* Champs input / textarea / select */
@@ -48,6 +49,7 @@
   font-size: 0.95rem;
   background-color: #f9fafb;
   transition: all 0.2s;
+  box-sizing: border-box; /* hahazo width uniforme */
 }
 
 /* Focus */
@@ -66,6 +68,16 @@
   resize: vertical;
 }
 
+/* Date input: mitovy width amin'ny champs rehetra + elanelana ambony */
+input[type="date"] {
+  margin-top: 0.5rem;
+}
+
+/* Select input: elanelana ambany ambony mba tsy mifampipetaka amin'ny date */
+select[name="contract_type"] {
+  margin-bottom: 0.5rem;
+}
+
 /* Boutons */
 .offre-form-container button {
   padding: 0.6rem 1.2rem;
@@ -77,18 +89,6 @@
 
 button:hover {
   transform: translateY(-2px);
-}
-
-/* Sliders personnalisés */
-input[type="range"] {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 10px;
-  border-radius: 5px;
-  background: #d1d5db;
-  outline: none;
-  padding: 0;
-  margin: 0.3rem 0 1rem 0;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -162,4 +162,57 @@ input[type="range"]::-moz-range-thumb {
 .scoring-container .form-field,
 .offre-form-container .form-field {
   width: 100%;
+}
+
+/* Container formulaire */
+.offre-form-container {
+  font-family: Arial, sans-serif;
+}
+
+/* Bouton Annuler */
+button.ml-auto.bg-red-600 {
+  background-color: #dc2626; /* Mena mazava */
+  color: #fff;
+  transition: background-color 0.3s;
+}
+
+button.ml-auto.bg-red-600:hover {
+  background-color: #b91c1c; /* Mena maizina rehefa hover */
+}
+
+/* Input Filtrer par poste */
+input[placeholder="Filtrer par poste"] {
+  margin-top: 8px; /* kely ambany an'ilay bouton */
+  text-align: center; /* placeholder ao afovoany */
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Placeholder style */
+input[placeholder="Filtrer par poste"]::placeholder {
+  text-align: center;
+  color: #6b7280; /* gris clair */
+}
+
+/* Table: ambony kely ny marge */
+table {
+  margin-top: 12px;
+  border-collapse: separate;
+  border-spacing: 0 6px; /* espace kely eo ambanin'ny row */
+}
+
+/* Colonne tête: background + texte */
+table thead tr {
+  border-radius: 0.5rem;
+}
+
+table th, table td {
+  padding: 8px 12px;
+  text-align: left;
 }

@@ -50,7 +50,7 @@
   border-radius: 25px;
   outline: none;
   transition: 0.2s ease;
-  text-align: center; /* PLACEHOLDER CENTRÉ */
+  text-align: center; 
 }
 
 .search-wrapper input:focus {
@@ -130,9 +130,12 @@
   padding: 0.5rem;
   text-align: left;
 }
+/* Ligne titre verte pour les tableaux */
 .rapports-tables th {
-  background-color: #f3f4f6;
+  background-color: #2ecc71; /* vert pro */
+  color: #ffffff;             /* texte blanc */
 }
+
 .rapports-tables tr:hover {
   background-color: #f9fafb;
 }
@@ -160,11 +163,6 @@
   margin-top: 6px;
 }
 
-
-
-
-/* ----------- FIX CENTRAGE & STYLE SEARCH ----------- */
-
 .search-wrapper {
   position: relative !important;
   width: 100% !important;
@@ -176,10 +174,10 @@
 
 .search-wrapper input {
   width: 100% !important;
-  padding: 10px 12px 10px 42px !important; /* toerana ho an’ny icone */
+  padding: 10px 12px 10px 42px !important; 
   border: 1px solid #ccc !important;
   border-radius: 25px !important;
-  text-align: center !important; /* centrage placeholder */
+  text-align: center !important; 
 }
 
 .search-wrapper input::placeholder {
@@ -196,4 +194,67 @@
   padding: 6px !important;
   border-radius: 50% !important;
   pointer-events: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sections-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #daf5e1; /* vert clair style carte */
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.section-header:hover {
+  background-color: #c2e9c0;
+}
+
+.section-header .icon-header {
+  color: #2e7d32; /* vert icon */
+}
+
+.toggle-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.section-table {
+  margin-bottom: 2rem;
+}
+
+.table-title {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
 }

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from models.candidatures import Candidature
+from models.models import Candidature
 from schemas.candidatures import CandidatureCreate
 import json
 

@@ -1,11 +1,15 @@
+# routers/absences.py
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from typing import List
 from app.db import get_db
-from app.models.models import Employee, Absence
+from app.models.models import Absence,Employee
 from app.schemas.absence import AbsenceCreate, AbsenceUpdate, AbsenceOut
 
-router = APIRouter(tags=["Absences"])
+router = APIRouter(
+    prefix="/api/absences",
+    tags=["Absences"]
+)
 
 # 🔹 Liste de toutes les absences
 @router.get("/", response_model=List[AbsenceOut])

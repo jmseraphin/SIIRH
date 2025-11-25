@@ -20,3 +20,15 @@ class EmployeeResponse(EmployeeBase):
 
     class Config:
         orm_mode = True
+# -------------------------------
+# Schema fohy ho an'ny Discipline (autocomplete, tableau, sns)
+# -------------------------------
+class Employee(BaseModel):
+    id: int
+    nom: str
+    prenom: str
+    email: Optional[str] = None
+    poste: Optional[str] = None
+
+    class Config:
+        from_attributes = True   # Pydantic v2

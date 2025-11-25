@@ -1,4 +1,9 @@
-# Import rehetra avy ao amin'ny models.py fotsiny
+# app/models/__init__.py
+
+# Import avy amin'ny discipline.py
+from .discipline import DisciplineCase, DisciplineEvidence, Event
+
+# Import avy amin'ny models hafa
 from .models import (
     Candidature,
     Employee,
@@ -15,5 +20,8 @@ __all__ = [
     "Paie",
     "Contrat",
     "Utilisateur",
-    "Convocation"
+    "Convocation",
+    "DisciplineCase",
+    "DisciplineEvidence",
+    "Event"
 ]

@@ -6,6 +6,8 @@
   background-color: #f8f9fa;
   min-height: 100vh;
   font-family: "Inter", sans-serif;
+  overflow: visible;
+  padding-bottom: 120px; /* mamela espace malalaka ambany */
 }
 
 /* ----- Header ----- */
@@ -23,7 +25,7 @@
 }
 
 .contrats-title-icon {
-  color: #4f46e5; /* couleur stylée */
+  color: #4f46e5;
   width: 28px;
   height: 28px;
 }
@@ -37,7 +39,7 @@
 /* Search + bouton création */
 .contrats-controls {
   display: flex;
-  flex-direction: column; /* mametraka ny search sy bouton ambany */
+  flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   margin-bottom: 20px;
@@ -47,15 +49,15 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: 10px;   /* elanelana ambony eo amin'ny titre sy search */
-  margin-bottom: 10px; /* elanelana ambany eo amin'ny search sy bouton */
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 100%;
-  max-width: 300px; /* halavany kely ny search bar, azo ovaina */
+  max-width: 300px;
 }
 
 .search-wrapper input {
   width: 100%;
-  padding: 8px 12px 8px 36px; /* padding-left ho an'ny icon */
+  padding: 8px 12px 8px 36px;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   font-size: 14px;
@@ -68,7 +70,6 @@
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
-/* Icon boribory eo ankavia */
 .search-wrapper .search-icon {
   position: absolute;
   left: 10px;
@@ -77,7 +78,6 @@
   height: 16px;
 }
 
-/* Bouton + Créer Contrat */
 .btn-add {
   padding: 8px 16px;
   background-color: #4f46e5;
@@ -96,7 +96,11 @@
 /* ----- Tableau ----- */
 .contrats-table-container {
   overflow-x: auto;
+  overflow-y: visible; /* azo jerena ny dropdown mivoaka ambany */
+  position: relative;   /* zava-dehibe */
+  padding-bottom: 100px; /* mamela espace ambany */
 }
+
 
 .contrats-table {
   width: 100%;
@@ -128,32 +132,39 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;      /* width avy amin’ny écran manontolo */
+  height: 100vh;     /* height avy amin’ny écran manontolo */
   background-color: rgba(0,0,0,0.5);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* centrer horizontalement */
+  align-items: center;     /* centrer verticalement */
   z-index: 1000;
 }
 
+
+/* ----- Formulaire ----- */
 .contrat-form {
   background-color: #fff;
   padding: 30px 35px;
   border-radius: 12px;
-  width: 420px;
+  width: 600px;      /* width vaovao azo ovaina araka izay tiana */
   max-width: 95%;
   box-shadow: 0 6px 25px rgba(0,0,0,0.2);
-  position: relative;
+  max-height: 90vh;  /* misoroka overflow be */
+  overflow-y: auto;  /* scroll anatiny raha lava */
+  display: flex;
+  flex-direction: column;
 }
 
+/* ----- Titre ----- */
 .contrat-form h2 {
   margin-bottom: 20px;
   font-size: 22px;
   color: #1f2937;
+  text-align: center; /* afovoany */
 }
 
-/* Champs formulaire */
+/* ----- Champs formulaire ----- */
 .contrat-form label {
   display: block;
   margin-bottom: 6px;
@@ -164,7 +175,8 @@
 .contrat-form input[type="text"],
 .contrat-form input[type="date"],
 .contrat-form input[type="number"],
-.contrat-form select {
+.contrat-form select,
+.contrat-form textarea {
   width: 100%;
   padding: 8px 12px;
   margin-bottom: 15px;
@@ -174,8 +186,18 @@
   transition: border 0.3s, box-shadow 0.3s;
 }
 
+/* Textarea mitovy halava amin'ny champ hafa */
+.contrat-form textarea {
+  min-height: 38px; 
+  padding: 8px 1px; 
+  font-size: 14px;
+  line-height: 20px;
+  resize: vertical;
+}
+
 .contrat-form input:focus,
-.contrat-form select:focus {
+.contrat-form select:focus,
+.contrat-form textarea:focus {
   outline: none;
   border-color: #4f46e5;
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
@@ -205,36 +227,44 @@
   background-color: #f3f4f6;
 }
 
-/* Actions formulaire */
+/* Actions formulaire (bokotra) */
 .form-actions {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; /* afaka center raha tiana */
   gap: 12px;
-  margin-top: 10px;
+  margin-top: auto; /* manery azy eo ambany scrollbar rehefa scrollable */
 }
 
-.form-actions button {
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: none;
+/* ----- Export dropdown ----- */
+.export-dropdown {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 4px;
+  z-index: 3000; 
+  min-width: 80px;
+  position: fixed;
+}
+
+.export-dropdown div {
+  padding: 6px 12px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
 }
 
-.form-actions button[type="submit"] {
-  background-color: #4f46e5;
-  color: #fff;
+.export-dropdown div:hover {
+  background-color: #f0f0f0;
 }
 
-.form-actions button[type="submit"]:hover {
-  background-color: #4338ca;
-  transform: translateY(-1px);
+.export-container {
+  position: relative;
+  display: inline-block;
 }
 
-.form-actions button[type="button"] {
-  background-color: #f50f1b;
-}
-
-.form-actions button[type="button"]:hover {
-  background-color: #dc4938;
+.btn-export {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
 }

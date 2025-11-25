@@ -289,14 +289,21 @@ input[list] {
 
 /* ------------------- Tables ------------------- */
 .tab-content table {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
   background: #fff;
   border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow-x: auto !important;
+  display: block; /* ✔ Ilaiko atao block mba haseho colonnes rehetra */
+  .tab-content table th,
+  .tab-content table td {
+   min-width: 120px;   /* ✔ Tsy ho 0px intsony ny width */
+  }
+  
 }
+
 
 .tab-content table th,
 .tab-content table td {
@@ -372,4 +379,19 @@ input[list] {
     font-size: 12px;
     padding: 6px;
   }
+}
+
+/* --- FIX TABLE EXPORT --- */
+.tab-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: auto !important;
+  overflow-x: auto !important; /* mba hanaovana scroll raha be colonne */
+  display: table !important;  /* ✔ averina ho table izy fa tsy block */
+}
+
+.tab-content table th,
+.tab-content table td {
+  min-width: 120px !important; /* ✔ manakana azy tsy ho 0px */
+  white-space: nowrap;
 }
