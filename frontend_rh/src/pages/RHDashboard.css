@@ -590,3 +590,49 @@
     font-size: 31px;
     color: #444;
 }
+
+
+
+
+
+
+
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 22px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  z-index: 50;
+}
+
+.dropdown-menu button {
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background: #f2f2f2;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: white;
+  width: 420px;
+  border-radius: 10px;
+  padding: 15px;
+}

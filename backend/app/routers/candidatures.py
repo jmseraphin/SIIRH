@@ -29,7 +29,7 @@ def create_candidature(
     type_contrat: str = Form(None),
     mobilite: str = Form(None),
     autorisation: str = Form(None),
-    offre_reference: str = Form(...),  # référence de l'offre (titre na code)
+    offre_reference: str = Form(...),  # référence de l'offre 
     competences_techniques: str = Form(None),
     competences_comportementales: str = Form(None),
     langues: str = Form(None),
@@ -106,26 +106,3 @@ def list_candidatures(db: Session = Depends(get_db)):
     candidatures = db.query(Candidature).order_by(Candidature.id.desc()).all()
     return candidatures
 
-
-# ==========================================================
-# 🔹 NOUVEAU : Envoyer convocation
-# ==========================================================
-@router.post("/{id}/send-invitation", response_model=CandidatureResponse)
-def send_invitation(id: int, db: Session = Depends(get_db)):
-    """
-    Met à jour le statut à 'Convoqué'
-    et enregistre la date et heure de convocation
-    """
-    candidature = db.query(Candidature).filter(Candidature.id == id).first()
-    if not candidature:
-        raise HTTPException(status_code=404, detail="Candidature non trouvée")
-
-    now = datetime.now()
-    candidature.statut = "Convoqué"
-    candidature.date_convocation = now.date()
-    candidature.heure_convocation = now.time().strftime("%H:%M:%S")
-
-    db.commit()
-    db.refresh(candidature)
-
-    return candidature
